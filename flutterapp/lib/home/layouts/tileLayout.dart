@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutterapp/common/cards/myTileCard.dart';
+import 'package:flutterapp/common/cards/myTileImageCart.dart';
+import 'package:flutterapp/control/deviceControlPanel.dart';
+
+final ThemeData _kTheme = new ThemeData(
+  brightness: Brightness.light,
+  primarySwatch: Colors.teal,
+  accentColor: Colors.redAccent,
+);
+
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2),
         const StaggeredTile.count(2, 1),
         const StaggeredTile.count(2, 1),
-        const StaggeredTile.count(2, 4),
+        const StaggeredTile.count(2, 3),
         const StaggeredTile.count(2, 2),
-        const StaggeredTile.count(2, 2),
+        const StaggeredTile.count(2, 1),
 ];
+
+DeviceControlPanel deviceControlPanelCallback() => DeviceControlPanel();
+
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
-    const _TileCard(Colors.pinkAccent, Icons.info),
-    const _TileCard(Colors.cyanAccent, Icons.photo),
-    const _TileCard(Colors.green, Icons.widgets),
+    const MyTileImageCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),//const _TileCard(Colors.pinkAccent, Icons.info),
+    const MyTileImageCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),//const _TileCard(Colors.cyanAccent, Icons.photo),
+    const MyTileCard(
+            'Remote Control', 
+            TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0), 
+            deviceControlPanelCallback,
+            Colors.green, 
+            'statics/images/remote_control.jpg',
+            ImageStyle(65, 65, Alignment.center),
+        ),
     const _TileCard(Colors.lightBlue, Icons.wifi),
     const _TileCard(Colors.brown, Icons.map),
 ];
@@ -52,10 +72,13 @@ class _TileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return new Card(
         color: backgroundColor,
         child: new InkWell(
-            onTap: () {},
+            onTap: () {navigate(context);},
+            splashColor: colorScheme.onSurface.withOpacity(0.12),
             child: new Center(
                 child: new Padding(
                     padding: const EdgeInsets.all(0.0),
@@ -69,4 +92,14 @@ class _TileCard extends StatelessWidget {
     );
   }
 
+  void navigate(BuildContext context){
+      Navigator.push(context, MaterialPageRoute<void>(
+          builder: (BuildContext context){
+              return Theme(
+                  data: _kTheme.copyWith(platform: Theme.of(context).platform),
+                  child: DeviceControlPanel(),
+              );
+          }
+      ));
+  }
 }
