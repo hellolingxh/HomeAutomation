@@ -29,6 +29,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Http library dependency
+  http:
+
+  # mqtt_client library dependency
+  mqtt_client: ^5.6.2
+
+  flutter_launcher_icons: any
+
+# To run flutter packages pub run flutter_launcher_icons:main 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "statics/icons/configuration.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -40,17 +54,21 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # To add fonts to your application, add an fonts section, like this:
+  fonts:
+    - family:  Flutter_custom_icon
+      fonts:
+       - asset: statics/fonts/Flutter_custom_icon.ttf
+
   # To add assets to your application, add an assets section, like this:
   assets:
     - statics/images/home_logo.jpg
     - statics/images/devices.png
-    - statics/images/iot_devices.png
-    - statics/images/sensors.png
     - statics/images/outdoor.jpg
     - statics/images/indoor.jpg
-    - statics/images/statistics.png
-    - statics/images/remote_control.jpg
-    - statics/images/configuration.png
+    - statics/icons/statistics.png
+    - statics/icons/remote_control.jpg
+    - statics/icons/configuration.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

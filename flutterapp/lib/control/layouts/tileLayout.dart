@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutterapp/common/card/myTileCard.dart';
+import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
+import 'package:flutterapp/control/devices/camera.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2), // control panel picture
@@ -13,16 +16,102 @@ List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(2, 1), // door control
 ];
 
+const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
+const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
+
+CameraWidget cameraWidgetCallback() => CameraWidget();
+
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
-    const _TileCard(Colors.pinkAccent, Icons.info),
-    const _TileCard(Colors.cyanAccent, Icons.photo),
-    const _TileCard(Colors.green, Icons.widgets),
-    const _TileCard(Colors.purpleAccent, Icons.photo_filter),
-    const _TileCard(Colors.cyan, Icons.pie_chart),
-    const _TileCard(Colors.lightBlue, Icons.wifi),
-    const _TileCard(Colors.brown, Icons.map),
-    const _TileCard(Colors.greenAccent, Icons.play_for_work),
+    const MyTileCard(
+            'CCTV', 
+            textStyle, 
+            cameraWidgetCallback,
+            Colors.pinkAccent,
+            Icon(
+                Flutter_custom_icon.videocam,
+                size: 50,
+                color: Colors.white,
+            )
+         ),
+    const MyTileCard(
+            'Fan', 
+            textStyle, 
+            null,
+            Colors.cyanAccent,
+            Icon(
+                Icons.device_hub,
+                size: 30,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Shutter', 
+            textStyle, 
+            null,
+            Colors.green,
+            Icon(
+                Icons.shutter_speed,
+                size: 30,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Outdoor', 
+            smallTextStyle, 
+            null,
+            Colors.purpleAccent,
+            Icon(
+                Flutter_custom_icon.thermometer,
+                size: 20,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Indoor', 
+            smallTextStyle, 
+            null,
+            Colors.cyan,
+            Icon(
+                Flutter_custom_icon.thermometer,
+                size: 20,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Entertainment', 
+            textStyle, 
+            null,
+            Colors.greenAccent,
+            Icon(
+                Flutter_custom_icon.gamepad,
+                size: 50,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Lighting', 
+            textStyle, 
+            null,
+            Colors.lightBlue,
+            Icon(
+                Flutter_custom_icon.lamp,
+                size: 30,
+                color: Colors.white,
+            )
+        ),
+    const MyTileCard(
+            'Door', 
+            textStyle, 
+            null,
+            Colors.grey,
+            Icon(
+                Flutter_custom_icon.enter,
+                size: 30,
+                color: Colors.white,
+            )
+        ),
+    
 ];
 
 StaggeredGridView staggeredGridView = new StaggeredGridView.count(

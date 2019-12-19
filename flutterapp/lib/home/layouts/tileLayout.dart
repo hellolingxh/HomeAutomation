@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/cards/myTileCard.dart';
-import 'package:flutterapp/common/cards/myTileImageCart.dart';
+import 'package:flutterapp/common/card/myTileCard.dart';
+import 'package:flutterapp/common/card/myTileImageCart.dart';
+import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
 import 'package:flutterapp/control/deviceControlPanel.dart';
 
 final ThemeData _kTheme = new ThemeData(
@@ -22,21 +23,45 @@ List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
 
 DeviceControlPanel deviceControlPanelCallback() => DeviceControlPanel();
 
+const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
-    const MyTileImageCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),//const _TileCard(Colors.pinkAccent, Icons.info),
-    const MyTileImageCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),//const _TileCard(Colors.cyanAccent, Icons.photo),
+    const MyTileImageCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),
+    const MyTileImageCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),
     const MyTileCard(
             'Remote Control', 
-            TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0), 
+            textStyle, 
             deviceControlPanelCallback,
-            Colors.green, 
-            'statics/images/remote_control.jpg',
-            ImageStyle(65, 65, Alignment.center),
+            Colors.green,
+            Icon(
+                Icons.wifi,
+                size: 50,
+                color: Colors.white,
+            )
         ),
-    const _TileCard(Colors.lightBlue, Icons.wifi),
-    const _TileCard(Colors.brown, Icons.map),
+    const MyTileCard(
+            'Data Statistics',
+            textStyle, 
+            deviceControlPanelCallback,
+            Colors.orange,
+            Icon(
+                Flutter_custom_icon.chart_line,
+                size: 50,
+                color: Colors.pink,
+            )
+        ),
+    const MyTileCard(
+            'Configuration', 
+            textStyle, 
+            deviceControlPanelCallback,
+            Colors.cyan,
+            Icon(
+               Flutter_custom_icon.cog_alt,
+                size: 50,
+                color: Colors.white,
+            )            
+        ),
 ];
 
 StaggeredGridView staggeredGridView = new StaggeredGridView.count(
@@ -84,7 +109,7 @@ class _TileCard extends StatelessWidget {
                     padding: const EdgeInsets.all(0.0),
                     child: new Icon(
                         iconData,
-                        color: Colors.white,
+                        color: Colors.red,
                     ),
                 ),
             ),

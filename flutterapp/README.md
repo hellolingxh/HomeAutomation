@@ -65,3 +65,15 @@ samples, guidance on mobile development, and a full API reference.
     - if you had the error with ADB version is too old need to install version 1.0.39 or later. run "~/Android/Sdk/tools/android update sdk -t platform-tool --no-ui
 
 
+# Flutter: Custom Icon in Your Project
+- 1. Go to http://fluttericon.com/ or http://fontello.com/
+- 2. Click on the icons that you want, upload custom SVG files, font-files, or JSON files
+- 3. Insert your own name like ‘Custom’, ‘Icecons’ etc.
+- 4. Click ‘Download’ and extract files
+- 5. The config.json is absolute genius, it saves all your selections and custom icons, so when you revisit the website just drag and drop it in and it’s all there again.
+- 6. Move the ttf file into your desired directory (e.g. fonts/CustomIcons.ttf)
+- 7. Move the dart file into your desired directory in lib (I did lib/presentation/custom_icons_icons.dart )
+- 8. Follow the instructions at the top of your dart file and copy the fonts code into pubspec.yml (I put mine underneath flutter: uses-material-design)
+- 9. flutter run to ensure project compiles and app starts expectedly
+
+
