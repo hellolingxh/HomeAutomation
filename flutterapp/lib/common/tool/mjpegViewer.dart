@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'dart:async';
 
 class MjpegView extends StatefulWidget {
-  MjpegView({this.url, this.fps = 2});
+  MjpegView({this.url, this.fps});
 
   String url;
   int fps;
@@ -23,6 +23,12 @@ class MjpegViewState extends State<MjpegView> {
 
   http.Client client = http.Client();
   StreamSubscription videoStream;
+
+  @override
+  void initState() {
+    super.initState();
+    buildImageStream();
+  }
 
   void buildImageStream() {
     var request = http.Request("GET", Uri.parse(widget.url));
@@ -90,9 +96,9 @@ class MjpegViewState extends State<MjpegView> {
   @override
   Widget build(BuildContext context) {
    
-    buildImageStream();
+    //buildImageStream();
     
-    return mjpeg;
+    return mjpeg == null ? new Center(child: CircularProgressIndicator()) : mjpeg;
 }
     
 }

@@ -1,16 +1,31 @@
+
 import 'package:flutter/material.dart';
-import '../../common/tool/mjpegViewer.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:speech_recognition/speech_recognition.dart';
 
-class CameraWidget extends StatefulWidget {
-
+class LightWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _CameraState();
+  State<StatefulWidget> createState() => new _LightState();
 
 }
 
-class _CameraState extends State<CameraWidget> {
-  bool isLoading = false;
+class _LightState extends State<LightWidget> {
+  
+  bool isLightOn = false;
+
+  SpeechRecognition _speechRecognition;
+  bool _isAvailable = false;
+  bool _isListening = false;
+
+  bool _isComplete = false;
+
+  String resultText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    initSpeechRecognizer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +33,7 @@ class _CameraState extends State<CameraWidget> {
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("Camera Control Panel"),
+                title: Text("Lights Control Panel"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,
@@ -45,43 +60,46 @@ class _CameraState extends State<CameraWidget> {
   }
 
   Widget _buildBody(){
-      
       return new Container(
           child: new Center(
                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                        new Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                            child: Container(
-                                    height: 260,
-                                    margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
-                                    alignment: Alignment.topRight,
-                                    child: isLoading==false ? Center(child: CircularProgressIndicator()) :  MjpegView(url: 'http://192.168.8.133:8080/?action=stream', fps: 2),
-                                    ),
+                        Container(
+                            height: 260,
+                            margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
+                            child: isLightOn==false ? Icon(Icons.lightbulb_outline, size: 200,) :  Icon(Icons.lightbulb_outline, size: 200, color: Colors.deepOrangeAccent,),
                         ),
-                        IconButton(
-                            icon: Icon(Icons.videocam, size:40,),
-                            onPressed: () {
-                                isLoading = isLoading ? false : true;
-                                print('test CCTV button, isLoading is ' + isLoading.toString());
+                        Switch(
+                            value: isLightOn,
+                            onChanged: (bool value){
+                                isLightOn = isLightOn ? false : true;
+                                print('test lighting button, isLoading is ' + isLightOn.toString());
                                 
                                 mqttConnect();
-                                
                             },
-                            color: isLoading == false ? Colors.grey : Colors.blue,
                         ),
+                        FloatingActionButton(
+                            heroTag: 'microphone',
+                            child: Icon(Icons.mic),
+                            onPressed: () {
+                                print('voice test 2 method. $_isAvailable and $_isListening');
+                                if(_isAvailable && !_isListening)
+                                    _speechRecognition.listen(locale: 'en_US').then((result) => print('$result'));
+                            },
+                            backgroundColor: Colors.pink,
+                        ),
+                        _isComplete ? Padding(child:Text(resultText,), padding: EdgeInsets.only(top: 5.0),) : Text(' '),
                 ],
             ),
           ),
       );
   }
-  
+
   final MqttClient client = MqttClient('192.168.8.1', '');
-  
+
   Future<int> mqttConnect() async{
-    
 
     client.logging(on: false);
 
@@ -172,21 +190,21 @@ class _CameraState extends State<CameraWidget> {
   /// Lets publish to our topic
   /// Use the payload builder rather than a raw buffer
   /// Our known topic to publish to
-  const String pubTopic = 'topic/camera/cctv';
+  const String pubTopic = 'topic/light/control';
   final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-  builder.addString(isLoading ? 'on' : 'off');
+  builder.addString(isLightOn ? 'on' : 'off');
 
   /// Subscribe to it
-  print('EXAMPLE::Subscribing to the Dart/Mqtt_client/testtopic topic');
+  print('EXAMPLE::Subscribing to the topic/light/control topic');
   client.subscribe(pubTopic, MqttQos.exactlyOnce);
 
   /// Publish it
   print('EXAMPLE::Publishing our topic');
   client.publishMessage(pubTopic, MqttQos.exactlyOnce, builder.payload);
 
-  await MqttUtilities.asyncSleep(1);
+  //await MqttUtilities.asyncSleep(1);
   setState(() {
-      isLoading = isLoading; //notificate the flutter to refresh to component.
+      isLightOn = isLightOn; //notificate the flutter to refresh to component.
   });
 
   /// Ok, we will now sleep a while, in this gap you will see ping request/response
@@ -204,7 +222,6 @@ class _CameraState extends State<CameraWidget> {
   client.disconnect();
   return 0;
   }
-
 
 /// The subscribed callback
 void onSubscribed(String topic) {
@@ -228,5 +245,48 @@ void onConnected() {
 void pong() {
   print('EXAMPLE::Ping response client callback invoked');
 }
+
+
+void initSpeechRecognizer(){
+      _speechRecognition = SpeechRecognition();
+      _speechRecognition.setAvailabilityHandler(
+          (bool result) => setState(() {
+              _isAvailable = result;
+           }),
+      );
+      _speechRecognition.setRecognitionStartedHandler(
+          () => setState(() {
+              _isComplete = false;
+              _isListening = true;
+            }),
+      );
+      _speechRecognition.setRecognitionResultHandler(
+          (String speech) => setState(() {
+              resultText = speech;
+          }), 
+      );
+      _speechRecognition.setRecognitionCompleteHandler(
+          () { 
+              print('the result is : $resultText');
+            
+              setState(() {
+                  if(resultText=='light on')
+                    isLightOn = true;
+                  else if(resultText=='light off')
+                    isLightOn = false;
+
+                  _isListening = false;
+                  _isComplete = true;
+              });
+              if(resultText=='light on' || resultText=='light off')
+                mqttConnect();
+            }
+      );
+      _speechRecognition.activate().then(
+          (result) => setState(() {
+              _isAvailable = result;
+          }),
+      );
+  }
 
 }

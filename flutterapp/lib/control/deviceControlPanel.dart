@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/control/layouts/tileLayout.dart';
+import '../control/layouts//tileLayout.dart';
 
 class DeviceControlPanel extends StatefulWidget {
 

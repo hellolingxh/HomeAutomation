@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../common/tool/mjpegViewer.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
-class CameraWidget extends StatefulWidget {
-
+class FanWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _CameraState();
-
+  State<StatefulWidget> createState() => new _FanState();
+    
 }
 
-class _CameraState extends State<CameraWidget> {
-  bool isLoading = false;
+class _FanState extends State<FanWidget> {
+  
+  bool isRunning = false;
+  int speed = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class _CameraState extends State<CameraWidget> {
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("Camera Control Panel"),
+                title: Text("Fan Control Panel"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,
@@ -45,43 +45,55 @@ class _CameraState extends State<CameraWidget> {
   }
 
   Widget _buildBody(){
-      
       return new Container(
-          child: new Center(
-                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                        new Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-                            child: Container(
-                                    height: 260,
-                                    margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
-                                    alignment: Alignment.topRight,
-                                    child: isLoading==false ? Center(child: CircularProgressIndicator()) :  MjpegView(url: 'http://192.168.8.133:8080/?action=stream', fps: 2),
-                                    ),
-                        ),
-                        IconButton(
-                            icon: Icon(Icons.videocam, size:40,),
-                            onPressed: () {
-                                isLoading = isLoading ? false : true;
-                                print('test CCTV button, isLoading is ' + isLoading.toString());
-                                
-                                mqttConnect();
-                                
-                            },
-                            color: isLoading == false ? Colors.grey : Colors.blue,
-                        ),
-                ],
-            ),
+          child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                          Text('Fan Feed:'),
+                          Text(speed.toString()),
+                      ],
+                  ),
+                  Slider(
+                        value: speed.toDouble(),
+                        min: 0.0,
+                        max: 100.0,
+                        onChanged: (double value) {
+                            print('on changed method, the value is '+value.toString());
+                            setState(() {
+                                speed = value.round();
+                            });
+                            mqttConnect();
+                        },
+                        onChangeStart: (double value){
+                            print('on change start method, the value is '+value.toString());
+                        },
+                        onChangeEnd: (double value){
+                            print('on change end method, the value is '+value.toString());
+                        },
+                    ),
+                    Switch(
+                        value: isRunning,
+                        onChanged: (bool value){
+                            setState(() {
+                                isRunning = isRunning ? false : true;
+                                print('test fan button, status is ' + isRunning.toString());
+                            });                            
+                            mqttConnect();
+                        },
+                    ),
+              ],
           ),
       );
   }
-  
+
   final MqttClient client = MqttClient('192.168.8.1', '');
-  
+
   Future<int> mqttConnect() async{
-    
 
     client.logging(on: false);
 
@@ -172,22 +184,17 @@ class _CameraState extends State<CameraWidget> {
   /// Lets publish to our topic
   /// Use the payload builder rather than a raw buffer
   /// Our known topic to publish to
-  const String pubTopic = 'topic/camera/cctv';
+  const String pubTopic = 'topic/fan/control';
   final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-  builder.addString(isLoading ? 'on' : 'off');
+  builder.addString(isRunning ? speed.toString() : 'off');
 
   /// Subscribe to it
-  print('EXAMPLE::Subscribing to the Dart/Mqtt_client/testtopic topic');
+  print('EXAMPLE::Subscribing to the topic/fan/control topic');
   client.subscribe(pubTopic, MqttQos.exactlyOnce);
 
   /// Publish it
   print('EXAMPLE::Publishing our topic');
   client.publishMessage(pubTopic, MqttQos.exactlyOnce, builder.payload);
-
-  await MqttUtilities.asyncSleep(1);
-  setState(() {
-      isLoading = isLoading; //notificate the flutter to refresh to component.
-  });
 
   /// Ok, we will now sleep a while, in this gap you will see ping request/response
   /// messages being exchanged by the keep alive mechanism.
@@ -205,8 +212,7 @@ class _CameraState extends State<CameraWidget> {
   return 0;
   }
 
-
-/// The subscribed callback
+  /// The subscribed callback
 void onSubscribed(String topic) {
   print('EXAMPLE::Subscription confirmed for topic $topic');
 }
@@ -228,5 +234,6 @@ void onConnected() {
 void pong() {
   print('EXAMPLE::Ping response client callback invoked');
 }
+
 
 }

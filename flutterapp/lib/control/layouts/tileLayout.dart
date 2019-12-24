@@ -3,6 +3,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutterapp/common/card/myTileCard.dart';
 import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
 import 'package:flutterapp/control/devices/camera.dart';
+import 'package:flutterapp/control/devices/fan.dart';
+import 'package:flutterapp/control/devices/light.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2), // control panel picture
@@ -20,6 +22,8 @@ const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
 CameraWidget cameraWidgetCallback() => CameraWidget();
+LightWidget lightWidgetCallback() => LightWidget();
+FanWidget fanWidgetCallback() => FanWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
@@ -37,7 +41,7 @@ List<Widget> tiles = const <Widget> [
     const MyTileCard(
             'Fan', 
             textStyle, 
-            null,
+            fanWidgetCallback,
             Colors.cyanAccent,
             Icon(
                 Icons.device_hub,
@@ -92,7 +96,7 @@ List<Widget> tiles = const <Widget> [
     const MyTileCard(
             'Lighting', 
             textStyle, 
-            null,
+            lightWidgetCallback,
             Colors.lightBlue,
             Icon(
                 Flutter_custom_icon.lamp,

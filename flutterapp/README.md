@@ -77,3 +77,24 @@ samples, guidance on mobile development, and a full API reference.
 - 9. flutter run to ensure project compiles and app starts expectedly
 
 
+# The issues and solutions
+- solution for issue 1: flutter pub global activate flutter_plugin_tools && flutter pub global run flutter_plugin_tools format, under the directory ${FLUTTER_ROOT}/packages/
+```
+Note: /usr/local/my/flutter/.pub-cache/hosted/pub.dartlang.org/speech_recognition-0.3.0+1/android/src/main/java/bz/rxla/flutter/speechrecognition/SpeechRecognitionPlugin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details. 
+
+if you met the exception, you need to do a command on Ubuntu: sudo apt-get install clang-format
+https://github.com/google/google-java-format 
+
+ProcessException: No such file or directory
+```
+- solution for issue 2: if you want to use the google voice assitance by called voice recognition APIs, you should enable the microphone permission on your test phone.
+```
+1, click the settings of your android phone
+2, choose your flutter app
+3, click the permission item
+4, enable the microphone option.
+```
+
+
+
