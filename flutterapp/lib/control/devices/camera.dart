@@ -58,7 +58,7 @@ class _CameraState extends State<CameraWidget> {
                                     height: 260,
                                     margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
                                     alignment: Alignment.topRight,
-                                    child: isLoading==false ? Center(child: CircularProgressIndicator()) :  MjpegView(url: 'http://192.168.8.133:8080/?action=stream', fps: 2),
+                                    child: isLoading==false ? Center(child: CircularProgressIndicator()) : MjpegView(url: 'http://192.168.8.133:8080/?action=stream', fps: 2),
                                     ),
                         ),
                         IconButton(

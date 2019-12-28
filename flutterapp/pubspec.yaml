@@ -24,6 +24,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_staggered_grid_view:
+  # This plugin provides MJPEG video streaming for Flutter
+  # It uses ipcam-view library for Android part, and a custom implementation for IOS part
+  # It need to add the attribute 'tools:replace="android:label"' and top-most 'manifest' with 'xmlns:tools="http://schemas.android.com/tools"'
+  #mjpeg: ^0.0.3
 
   # Http library dependency
   http:

@@ -27,7 +27,6 @@ class MjpegViewState extends State<MjpegView> {
   @override
   void initState() {
     super.initState();
-    buildImageStream();
   }
 
   void buildImageStream() {
@@ -96,7 +95,7 @@ class MjpegViewState extends State<MjpegView> {
   @override
   Widget build(BuildContext context) {
    
-    //buildImageStream();
+    buildImageStream();
     
     return mjpeg == null ? new Center(child: CircularProgressIndicator()) : mjpeg;
 }
