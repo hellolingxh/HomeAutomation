@@ -29,7 +29,7 @@ def main():
     broker_address="b-64160930-1437-447e-a084-0f0e5ed98c68-1.mq.eu-west-1.amazonaws.com"
     print('connecting ',broker_address)
     client = mqtt.Client('Console')
-    client.username_pw_set('mqtt', 'LOvehuihui1314')
+    client.username_pw_set('', '')
     client.on_connect=on_connect
     client.on_message=on_message
     client.tls_set('/home/pi/cert/AmazonRootCA1.pem')
