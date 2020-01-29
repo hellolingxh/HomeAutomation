@@ -1,4 +1,4 @@
-# This is a project for centre console of the home automation
+# This is a project for centre console of the home automation hub
 
 # OperWrt router configuration
 - username
