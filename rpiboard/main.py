@@ -6,6 +6,8 @@ from scripts.camera.control import cameraOn, cameraOff
 from scripts.light.control import lightOn, lightOff
 from scripts.fan.control import fanOn, fanOff, fanSpeed
 import paho.mqtt.client as mqtt
+from cloudMain import cloud_main
+import _thread
 
 import time
 ############
@@ -26,10 +28,10 @@ def on_message(client, userdata, message):
             cameraOff()
     elif message.topic=='topic/light/control':
         if status=='on':
-            print('light on')
+            print('light on by WIFI')
             lightOn()
         else:
-            print('light off')
+            print('light off by WIFI')
             lightOff()
     elif message.topic=='topic/fan/control':
         if status=='off':
@@ -42,6 +44,7 @@ def on_message(client, userdata, message):
     
 ########################################
 def main():
+    print('test2')
     broker_address="192.168.8.1"
     #fanOn()
     print("creating new instance")
@@ -50,18 +53,21 @@ def main():
     print("connecting to broker")
     client.connect(broker_address) #connect to broker
     client.loop_start() #start the loop
-    print("Subscribing to camera topic","topic/camera/cctv")
+    print("Subscribing to camera topic","topic/camera/cctv by WIFI")
     client.subscribe("topic/camera/cctv")
-    print("Subscribing to ligh topic","topic/light/control")
+    print("Subscribing to ligh topic","topic/light/control by WIFI")
     client.subscribe("topic/light/control")
-    print("Subscribing to fan topic","topic/fan/control")
+    print("Subscribing to fan topic","topic/fan/control by WIFI")
     client.subscribe("topic/fan/control")
     time.sleep(24*60*60) # wait
     print('time up to stop')
     client.loop_stop() #stop the loop
 
 if __name__ == "__main__":
-    main()
-    print('The program has already exited')
-    GPIO.cleanup()
+    try:
+       _thread.start_new_thread( main, () )
+       _thread.start_new_thread( cloud_main, () )
+    except:
+       print ("Error: unable to start thread")
+    
 

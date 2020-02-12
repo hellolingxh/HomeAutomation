@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+*/__pycache__/
 
 # IntelliJ related
 *.iml
