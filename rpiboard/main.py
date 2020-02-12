@@ -58,10 +58,7 @@ def main():
     client.subscribe("topic/fan/control")
     time.sleep(24*60*60) # wait
     print('time up to stop')
-    client.loop_stop() #stop the loop
-
-if __name__ == "__main__":
-    main()
+    client.loop_stop() #storpiboard/scripts/camera/control.py
     print('The program has already exited')
-    GPIO.cleanup()
+    
 

@@ -233,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  wifi_configuration:
+    dependency: "direct main"
+    description:
+      name: wifi_configuration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   xml:
     dependency: transitive
     description:
