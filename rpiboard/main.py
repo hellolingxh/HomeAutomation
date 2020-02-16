@@ -5,6 +5,7 @@ sys.path.append('/opt/rpiboard')
 from scripts.camera.control import cameraOn, cameraOff
 from scripts.light.control import lightOn, lightOff
 from scripts.fan.control import fanOn, fanOff, fanSpeed
+from scripts.shutter.control import shutterMove, shutterStop
 import paho.mqtt.client as mqtt
 from cloudMain import cloud_main
 import _thread
@@ -40,11 +41,18 @@ def on_message(client, userdata, message):
         elif status.isnumeric():
             print('fan speed adjust')
             fanSpeed(int(status))
+    elif message.topic=='topic/shutter/control':
+        if status=='stop':
+            print('shutter stop')
+            shutterStop()
+        else:
+            print('shutter move to left')
+            shutterMove(status)
                     
     
 ########################################
 def main():
-    print('test2')
+
     broker_address="192.168.8.1"
     #fanOn()
     print("creating new instance")
@@ -59,6 +67,8 @@ def main():
     client.subscribe("topic/light/control")
     print("Subscribing to fan topic","topic/fan/control by WIFI")
     client.subscribe("topic/fan/control")
+    print("Subscribing to shutter topic","topic/shutter/control by WIFI")
+    client.subscribe("topic/shutter/control")
     time.sleep(24*60*60) # wait
     print('time up to stop')
     client.loop_stop() #stop the loop
@@ -66,7 +76,7 @@ def main():
 if __name__ == "__main__":
     try:
        _thread.start_new_thread( main, () )
-       _thread.start_new_thread( cloud_main, () )
+       #_thread.start_new_thread( cloud_main, () )
     except:
        print ("Error: unable to start thread")
     
