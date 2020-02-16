@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:speech_recognition/speech_recognition.dart';
 
-class LightWidget extends StatefulWidget {
+class LightWithInternetWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _LightState();
+  State<StatefulWidget> createState() => new _LightWithInternetState();
 
 }
 
-class _LightState extends State<LightWidget> {
+class _LightWithInternetState extends State<LightWithInternetWidget> {
   
   bool isLightOn = false;
 
@@ -101,7 +101,7 @@ class _LightState extends State<LightWidget> {
   }
 
   
-  final MqttClient client = MqttClient('192.168.8.1', '');
+  final MqttClient client = MqttClient.withPort('b-ddb6ba7b-55f1-4ad2-b3c9-7754a11843ac-1.mq.eu-west-1.amazonaws.com', 'flutterapp', 8883);//MqttClient('192.168.8.1', '');
 
   Future<int> mqttConnect() async{
 
@@ -144,7 +144,7 @@ class _LightState extends State<LightWidget> {
 
   client.setProtocolV311();
 
-  //client.secure = true;
+  client.secure = true;
 
   /// Create a connection message to use or use the default one. The default one sets the
   /// client identifier, any supplied username/password, the default keepalive interval(60s)
@@ -164,7 +164,7 @@ class _LightState extends State<LightWidget> {
   /// in some circumstances the broker will just disconnect us, see the spec about this, we however eill
   /// never send malformed messages.
   try {
-    await client.connect();
+    await client.connect('mqtt', '1qaz@WSX3edc');
   } on Exception catch (e) {
     print('EXAMPLE::client exception - $e');
     client.disconnect();
