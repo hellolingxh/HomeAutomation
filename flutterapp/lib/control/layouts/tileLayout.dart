@@ -5,6 +5,7 @@ import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
 import 'package:flutterapp/control/devices/camera.dart';
 import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/devices/light_navigator.dart';
+import 'package:flutterapp/control/devices/shutter.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2), // control panel picture
@@ -24,6 +25,7 @@ const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontW
 CameraWidget cameraWidgetCallback() => CameraWidget();
 LightNavigator lightWidgetCallback() => LightNavigator();
 FanWidget fanWidgetCallback() => FanWidget();
+ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
@@ -52,7 +54,7 @@ List<Widget> tiles = const <Widget> [
     const MyTileCard(
             'Shutter', 
             textStyle, 
-            null,
+            shutterControlWidgetCallback,
             Colors.green,
             Icon(
                 Icons.shutter_speed,
