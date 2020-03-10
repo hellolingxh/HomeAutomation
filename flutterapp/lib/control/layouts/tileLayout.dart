@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutterapp/common/card/myTileCard.dart';
 import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
 import 'package:flutterapp/control/devices/camera.dart';
+import 'package:flutterapp/control/devices/door.dart';
 import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/devices/light_navigator.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
@@ -26,6 +27,7 @@ CameraWidget cameraWidgetCallback() => CameraWidget();
 LightNavigator lightWidgetCallback() => LightNavigator();
 FanWidget fanWidgetCallback() => FanWidget();
 ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
+DoorWidget doorWidgetCallback() => DoorWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
@@ -109,7 +111,7 @@ List<Widget> tiles = const <Widget> [
     const MyTileCard(
             'Door', 
             textStyle, 
-            null,
+            doorWidgetCallback,
             Colors.grey,
             Icon(
                 Flutter_custom_icon.enter,
