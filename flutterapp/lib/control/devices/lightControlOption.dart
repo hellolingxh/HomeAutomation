@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/control/devices/light.dart';
-import 'package:flutterapp/control/devices/light_with_internet.dart';
 
-class LightNavigator extends StatefulWidget {
+class LightControlOptionWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _LightNavigator();
+  State<StatefulWidget> createState() => new _LightControlOptionState();
 
 }
 
-class _LightNavigator extends State<LightNavigator> {
+class _LightControlOptionState extends State<LightControlOptionWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -89,7 +88,7 @@ class _LightNavigator extends State<LightNavigator> {
                                 builder: (BuildContext context){
                                     return Theme(
                                         data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
-                                        child: radioValue == 1 ? new LightWithInternetWidget() : new LightWidget(),
+                                        child: new LightWidget(radioValue),
                                     );
                                 }
                             ));

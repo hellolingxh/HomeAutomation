@@ -5,19 +5,44 @@ import 'package:flutterapp/common/util/googleSpeechRecognition.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
 
 class LightWidget extends StatefulWidget {
+  final int type; // to decide the control either WiFi or Internet
+
+  LightWidget(this.type);
+
   @override
-  State<StatefulWidget> createState() => new _LightState();
+  State<StatefulWidget> createState() {
+    _LightState _state ;
+    
+    if(type == 0)
+      _state = new _LightState( new MqttCommander(
+                    GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
+                    GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
+                    GlobalConfig.MQTT_CLIENT_IDENTIFIER_LIGHT
+                    )
+            );
+    else
+      _state = new _LightState( new MqttCommander(
+                    GlobalConfig.AWS_ACTIVEMQ_HOST, 
+                    GlobalConfig.AWS_ACTIVEMQ_LISTEN_PORT,
+                    GlobalConfig.MQTT_CLIENT_IDENTIFIER_LIGHT,
+                    isSecure: true,
+                    username: 'mqtt', 
+                    password: '1qaz@WSX3edc'
+                  )
+      );
+
+      return _state;
+  } 
 
 }
 
 class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
-  final MqttCommander commander = new MqttCommander(
-    GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
-    GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
-    GlobalConfig.MQTT_CLIENT_IDENTIFIER_LIGHT
-  );
+
+  final MqttCommander commander;
 
   bool _isLightOn = false;
+
+  _LightState(this.commander);
 
   @override
   void initState() {

@@ -4,7 +4,7 @@ import 'package:flutterapp/common/card/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/devices/cctv.dart';
 import 'package:flutterapp/control/devices/fan.dart';
-import 'package:flutterapp/control/devices/light_navigator.dart';
+import 'package:flutterapp/control/devices/lightControlOption.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
@@ -23,7 +23,7 @@ const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
 CCTVWidget cctvWidgetCallback() => CCTVWidget();
-LightNavigator lightWidgetCallback() => LightNavigator();
+LightControlOptionWidget lightOptionWidgetCallback() => LightControlOptionWidget();
 FanWidget fanWidgetCallback() => FanWidget();
 ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
 
@@ -98,7 +98,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Lighting', 
             textStyle, 
-            lightWidgetCallback,
+            lightOptionWidgetCallback,
             Colors.lightBlue,
             Icon(
                 FlutterCustomIcon.lamp,
