@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/card/myTileCard.dart';
-import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
-import 'package:flutterapp/control/devices/camera.dart';
-import 'package:flutterapp/control/devices/door.dart';
+import 'package:flutterapp/common/card/tileCard.dart';
+import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
+import 'package:flutterapp/control/devices/cctv.dart';
 import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/devices/light_navigator.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
@@ -23,26 +22,25 @@ List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
 const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
-CameraWidget cameraWidgetCallback() => CameraWidget();
+CCTVWidget cctvWidgetCallback() => CCTVWidget();
 LightNavigator lightWidgetCallback() => LightNavigator();
 FanWidget fanWidgetCallback() => FanWidget();
 ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
-DoorWidget doorWidgetCallback() => DoorWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
-    const MyTileCard(
+    const TileCard(
             'CCTV', 
             textStyle, 
-            cameraWidgetCallback,
+            cctvWidgetCallback,
             Colors.pinkAccent,
             Icon(
-                Flutter_custom_icon.videocam,
+                FlutterCustomIcon.videocam,
                 size: 50,
                 color: Colors.white,
             )
          ),
-    const MyTileCard(
+    const TileCard(
             'Fan', 
             textStyle, 
             fanWidgetCallback,
@@ -53,7 +51,7 @@ List<Widget> tiles = const <Widget> [
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Shutter', 
             textStyle, 
             shutterControlWidgetCallback,
@@ -64,57 +62,57 @@ List<Widget> tiles = const <Widget> [
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Outdoor', 
             smallTextStyle, 
             null,
             Colors.purpleAccent,
             Icon(
-                Flutter_custom_icon.thermometer,
+                FlutterCustomIcon.thermometer,
                 size: 20,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Indoor', 
             smallTextStyle, 
             null,
             Colors.cyan,
             Icon(
-                Flutter_custom_icon.thermometer,
+                FlutterCustomIcon.thermometer,
                 size: 20,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Entertainment', 
             textStyle, 
             null,
             Colors.greenAccent,
             Icon(
-                Flutter_custom_icon.gamepad,
+                FlutterCustomIcon.gamepad,
                 size: 50,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Lighting', 
             textStyle, 
             lightWidgetCallback,
             Colors.lightBlue,
             Icon(
-                Flutter_custom_icon.lamp,
+                FlutterCustomIcon.lamp,
                 size: 30,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Door', 
             textStyle, 
-            doorWidgetCallback,
+            null,
             Colors.grey,
             Icon(
-                Flutter_custom_icon.enter,
+                FlutterCustomIcon.enter,
                 size: 30,
                 color: Colors.white,
             )
@@ -142,33 +140,6 @@ class _TileImageCard extends StatelessWidget {
         elevation: 10,
         shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
         child: Image.asset('statics/images/devices.png', fit: BoxFit.fill,),
-    );
-  }
-    
-}
-
-class _TileCard extends StatelessWidget {
-  const _TileCard(this.backgroundColor, this.iconData);
-
-  final Color backgroundColor;
-  final IconData iconData;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Card(
-        color: backgroundColor,
-        child: new InkWell(
-            onTap: () { debugPrint('message test');},
-            child: new Center(
-                child: new Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: new Icon(
-                        iconData,
-                        color: Colors.white,
-                    ),
-                ),
-            ),
-        )
     );
   }
 

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
 
-final ThemeData _kTheme = new ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.teal,
-  accentColor: Colors.redAccent,
-);
-
-class MyTileCard extends StatelessWidget {
-  const MyTileCard(this.text, this.textStyle, this.action, this.backgroundColor, this.icon);
+class TileCard extends StatelessWidget {
+  const TileCard(this.text, this.textStyle, this.action, this.backgroundColor, this.icon);
   
   final String text;
   final TextStyle textStyle;
@@ -39,7 +34,7 @@ class MyTileCard extends StatelessWidget {
       Navigator.push(context, MaterialPageRoute<void>(
           builder: (BuildContext context){
               return Theme(
-                  data: _kTheme.copyWith(platform: Theme.of(context).platform),
+                  data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
                   child: action(),
               );
           }

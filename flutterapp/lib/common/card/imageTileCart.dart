@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
 
-final ThemeData _kTheme = new ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.teal,
-  accentColor: Colors.redAccent,
-);
-
-class MyTileImageCard extends StatelessWidget {
-  const MyTileImageCard(this.text, this.thermometer, this.backgroundColor, this.assetImageName, this.action);
+class ImageTileCard extends StatelessWidget {
+  const ImageTileCard(this.text, this.thermometer, this.backgroundColor, this.assetImageName, this.action);
   
   final String text;
   final int thermometer;
@@ -17,21 +12,6 @@ class MyTileImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*return new Card(
-        color: backgroundColor,
-        child: new InkWell(
-            onTap: () { if(action != null) navigate(context);},
-            child: new Center(
-                child: new Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Opacity(
-                        opacity: 0.60,
-                        child: Image.asset(assetImageName, fit: BoxFit.cover, height: double.infinity, width: double.infinity, alignment: Alignment.center,),
-                    ),
-                ),
-            ),
-        )
-    );*/
 
     return Card(
       child: Container(
@@ -53,7 +33,7 @@ class MyTileImageCard extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.only(top: 42.0, left: 5.0),
                     alignment: Alignment.bottomLeft,
-                    child: Text(thermometer.toString()+'\u2103', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900),),
+                    child: Text(thermometer.toString()+GlobalConfig.CElSIUS_SYMBOL, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900),),
                 ),
             ],
         ),
@@ -65,7 +45,7 @@ class MyTileImageCard extends StatelessWidget {
       Navigator.push(context, MaterialPageRoute<void>(
           builder: (BuildContext context){
               return Theme(
-                  data: _kTheme.copyWith(platform: Theme.of(context).platform),
+                  data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
                   child: action(),
               );
           }

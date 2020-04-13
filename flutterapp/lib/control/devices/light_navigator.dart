@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/control/devices/light.dart';
 import 'package:flutterapp/control/devices/light_with_internet.dart';
-
-final ThemeData _kTheme = new ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.teal,
-  accentColor: Colors.redAccent,
-);
 
 class LightNavigator extends StatefulWidget {
   @override
@@ -64,27 +59,17 @@ class _LightNavigator extends State<LightNavigator> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                     Radio<int>(
-                    value: 0,
-                    groupValue: radioValue,
-                    onChanged: handleRadioValueChanged,
+                      value: 0,
+                      groupValue: radioValue,
+                      onChanged: handleRadioValueChanged,
                     ),
-                    new Text(
-                            'WIFI',
-                            style: new TextStyle(
-                                fontSize: 16.0,
-                            ),
-                    ),
+                    new Text('WIFI',style: new TextStyle(fontSize: 16.0)),
                     Radio<int>(
-                    value: 1,
-                    groupValue: radioValue,
-                    onChanged: handleRadioValueChanged,
+                      value: 1,
+                      groupValue: radioValue,
+                      onChanged: handleRadioValueChanged,
                     ),
-                    new Text(
-                            'INTERNET',
-                            style: new TextStyle(
-                                fontSize: 16.0,
-                            ),
-                    ),
+                    new Text('INTERNET', style: new TextStyle(fontSize: 16.0,)),
                 ],
             ),
             Row(
@@ -98,16 +83,12 @@ class _LightNavigator extends State<LightNavigator> {
                         disabledTextColor: Colors.black,
                         padding: EdgeInsets.all(8.0),
                         splashColor: Colors.blueAccent,
-                        child: Text(
-                            'Next',
-                            style: new TextStyle(
-                                fontSize: 16.0,
-                            ),),
+                        child: Text('Next', style: new TextStyle(fontSize: 16.0)),
                         onPressed: () {
                             Navigator.push(context, MaterialPageRoute<void>(
                                 builder: (BuildContext context){
                                     return Theme(
-                                        data: _kTheme.copyWith(platform: Theme.of(context).platform),
+                                        data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
                                         child: radioValue == 1 ? new LightWithInternetWidget() : new LightWidget(),
                                     );
                                 }
