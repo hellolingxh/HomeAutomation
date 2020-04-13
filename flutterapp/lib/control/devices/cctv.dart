@@ -69,7 +69,7 @@ class _CCTVState extends State<CCTVWidget> {
                                     alignment: Alignment.topRight,
                                     child: isLoading==false ? 
                                           Center(child: CircularProgressIndicator()) :  
-                                          MjpegView(url: GlobalConfig.CCTV_VIDEO_STREAM_URL, fps: 2),
+                                          MjpegView(url: GlobalConfig.CCTV_VIDEO_STREAM_URL, fps: 100),
                                     ),
                         ),
                         IconButton(
@@ -87,7 +87,8 @@ class _CCTVState extends State<CCTVWidget> {
   }
 
   void updateVideoState() async {
-    await Future.delayed(const Duration(milliseconds: 1500), () {
+    //when the command has already sent to CCTV, then will get the live video after 3 seconds.
+    await Future.delayed(const Duration(milliseconds: 3000), () {
       setState(() {
         isLoading = isLoading ? false : true; //notificate the flutter to refresh to component.
       });
