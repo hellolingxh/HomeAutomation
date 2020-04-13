@@ -3,12 +3,12 @@ import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
 
-class ShutterControlWidget extends StatefulWidget {
+class ShutterWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _ShutterControlState();
+  State<StatefulWidget> createState() => new _ShutterState();
 }
 
-class _ShutterControlState extends State {
+class _ShutterState extends State {
 
   final MqttCommander commander = new MqttCommander(
     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 

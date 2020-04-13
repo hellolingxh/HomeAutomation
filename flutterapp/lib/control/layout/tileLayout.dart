@@ -4,7 +4,7 @@ import 'package:flutterapp/common/card/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/devices/cctv.dart';
 import 'package:flutterapp/control/devices/fan.dart';
-import 'package:flutterapp/control/devices/lightControlOption.dart';
+import 'package:flutterapp/control/option/lightControlOption.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
@@ -25,7 +25,7 @@ const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontW
 CCTVWidget cctvWidgetCallback() => CCTVWidget();
 LightControlOptionWidget lightOptionWidgetCallback() => LightControlOptionWidget();
 FanWidget fanWidgetCallback() => FanWidget();
-ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
+ShutterWidget shutterControlWidgetCallback() => ShutterWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
