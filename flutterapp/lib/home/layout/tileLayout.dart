@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/card/imageTileCart.dart';
-import 'package:flutterapp/common/card/tileCard.dart';
+import 'package:flutterapp/common/ui/imageTileCart.dart';
+import 'package:flutterapp/common/ui/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/deviceControlPanel.dart';
 
