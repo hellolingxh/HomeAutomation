@@ -158,15 +158,15 @@ class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
   @override
   void setRecognitionCompleteState() {
     setState(() {
-      if(resultText=='light on')
+      if(resultText==GlobalConfig.SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_ON)
         _isLightOn = true;
-      else if(resultText=='light off')
+      else if(resultText==GlobalConfig.SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_OFF)
         _isLightOn = false;
 
       isListening = false;
       isComplete = true;
     });
-    if(resultText=='light on' || resultText=='light off')
+    if(resultText==GlobalConfig.SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_ON || resultText==GlobalConfig.SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_OFF)
       _commander.send(Commands.LIGHT_CONTROL, _isLightOn ? 'on' : 'off');
   }
 

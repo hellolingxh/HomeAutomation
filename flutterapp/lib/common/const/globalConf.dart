@@ -26,6 +26,10 @@ class GlobalConfig {
 
     static const String OUTDOOR = 'outdoor';
 
+    static const String SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_ON = 'light on';
+
+    static const String SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_OFF = 'light off';
+
     static const String MQTT_CLIENT_IDENTIFIER_LIGHT = 'Light_MQTT_Client';
 
     static const String MQTT_CLIENT_IDENTIFIER_FAN = 'Fan_MQTT_Client';
