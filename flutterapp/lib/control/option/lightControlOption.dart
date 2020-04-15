@@ -15,7 +15,7 @@ class _LightControlOptionState extends State<LightControlOptionWidget> {
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("Lights Control Panel Options"),
+                title: Text("Light Control Panel Options"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,

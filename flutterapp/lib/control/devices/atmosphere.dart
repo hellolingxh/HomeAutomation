@@ -8,6 +8,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 
 class AtmosphereWidget extends StatefulWidget {
   
+  /// to decide the temperature and humidity measurement in which environment.
   final String indoorOrOutdoor;
 
   const AtmosphereWidget(this.indoorOrOutdoor, {Key key}) : super(key: key);
@@ -25,8 +26,8 @@ class _AtmosphereState extends State<AtmosphereWidget> {
     GlobalConfig.MQTT_CLIENT_IDENTIFIER_ATMOSPHERE
   );
 
-  String _thermometerValue = "17.8";
-  String _humidityValue = "43.7";
+  String _thermometerValue = GlobalConfig.DEFAULT_INITIAL_TEMPERATURE_VALUE;
+  String _humidityValue = GlobalConfig.DEFAULT_INITIAL_HUMIDITY_VALUE;
 
   bool _isPublishing;
 
@@ -54,7 +55,7 @@ class _AtmosphereState extends State<AtmosphereWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //_commander.send(Commands.INDOOR_TEMPERATURE_HUMIDITY_DATA_READ, 'on');
+    
     _commander.receive(
       widget.indoorOrOutdoor == GlobalConfig.INDOOR ?
         Commands.INDOOR_TEMPERATURE_HUMIDITY_DATA_RECEIVE :
@@ -142,7 +143,7 @@ class _AtmosphereState extends State<AtmosphereWidget> {
         await MqttUtilities.asyncSleep(second);
       }
     }
-
+    // This is a callback method that is called when the message has already received. 
     void refreshMeasurement(String message){
       if(message.contains("|")){
         List<String> result = message.split("|");

@@ -14,6 +14,8 @@ class GlobalConfig {
 
     static const String CCTV_VIDEO_STREAM_URL = 'http://192.168.8.133:8080/?action=stream';
 
+    static const String DOOR_CAMERA_VIDEO_STREAM_URL = 'http://192.168.8.133:8088/?action=stream';
+
     static const String LOCAL_MQTT_BROKER_HOST = '192.168.8.1';
 
     static const int LOCAL_MQTT_BROKER_LISTEN_PORT = 1883;
@@ -29,6 +31,10 @@ class GlobalConfig {
     static const String SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_ON = 'light on';
 
     static const String SPEECH_RECOGNITION_KEY_WORD_TURN_LIGHT_OFF = 'light off';
+
+    static const String DEFAULT_INITIAL_TEMPERATURE_VALUE = '17.8';
+
+    static const String DEFAULT_INITIAL_HUMIDITY_VALUE = '43.7';
 
     static const String MQTT_CLIENT_IDENTIFIER_LIGHT = 'Light_MQTT_Client';
 

@@ -90,7 +90,7 @@ class _DoorAccessState extends State<StatefulWidget> {
                                     alignment: Alignment.topRight,
                                     child: !_isVideoLoading ? 
                                           Center(child: CircularProgressIndicator()) :  
-                                          MjpegView(url: 'http://192.168.8.133:8088/?action=stream', fps: 200),
+                                          MjpegView(url: GlobalConfig.DOOR_CAMERA_VIDEO_STREAM_URL, fps: 200),
                                 ),
                         ),
                         Row(
