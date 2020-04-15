@@ -11,14 +11,20 @@ class FanWidget extends StatefulWidget {
 
 class _FanState extends State<FanWidget> {
 
-  final MqttCommander commander = new MqttCommander(
+  final MqttCommander _commander = new MqttCommander(
     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
     GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
     GlobalConfig.MQTT_CLIENT_IDENTIFIER_FAN
   );
   
-  bool isRunning = false;
-  int speed = 70;
+  bool _isRunning = false;
+  int _speed = 70;
+
+  @override 
+  void dispose() {
+    super.dispose();
+    _commander.disconnect();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +69,20 @@ class _FanState extends State<FanWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                           Text('Fan Speed:'),
-                          Text(speed.toString()),
+                          Text(_speed.toString()),
                       ],
                   ),
                   Slider(
-                        value: speed.toDouble(),
+                        value: _speed.toDouble(),
                         min: 0.0,
                         max: 100.0,
                         onChanged: (double value) {
                             print('on changed method, the value is '+value.toString());
                             setState(() {
-                                speed = value.round();
+                                _speed = value.round();
                             });
-                            if(isRunning)
-                              commander.send(Commands.FAN_CONTROL, speed.toString());
+                            if(_isRunning)
+                              _commander.send(Commands.FAN_CONTROL, _speed.toString());
                         },
                         onChangeStart: (double value){
                             print('on change start method, the value is '+value.toString());
@@ -86,12 +92,12 @@ class _FanState extends State<FanWidget> {
                         },
                     ),
                     Switch(
-                        value: isRunning,
+                        value: _isRunning,
                         onChanged: (bool value){
                             setState(() {
-                                isRunning = isRunning ? false : true;
+                                _isRunning = _isRunning ? false : true;
                             });                            
-                            commander.send(Commands.FAN_CONTROL, isRunning ? speed.toString() : 'off');
+                            _commander.send(Commands.FAN_CONTROL, _isRunning ? _speed.toString() : 'off');
                         },
                     ),
               ],

@@ -37,10 +37,13 @@ class MqttCommander {
       secure = isSecure;
       this.username = username;
       this.password = password;
-      client = new MqttClient.withPort(host, clientName, remotePort);
+      _connect();
     }
 
     _initial(){
+      /// to create a mqtt client
+      client = new MqttClient.withPort(host, clientIdentifier, port);
+
       /// A websocket URL must start with ws:// or wss:// or Dart will throw an exception, consult your websocket MQTT broker
       /// for details.
       /// To use websockets add the following lines -:
@@ -95,7 +98,11 @@ class MqttCommander {
 
     }
 
-    _connect() async{
+    Future _connect() async{
+
+      /// to inital the context of the mqtt client
+      _initial();
+
       /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
       /// in some circumstances the broker will just disconnect us, see the spec about this, we however eill
       /// never send malformed messages.
@@ -143,14 +150,14 @@ class MqttCommander {
     }
 
     Future<int> _subscribe(String topic) async{
-      //const String topic = 'test/lol'; // Not a wildcard topic
+      await MqttUtilities.asyncSleep(2);
       client.subscribe(topic, MqttQos.atMostOnce);
 
       return 0;
 
     }
 
-    Future<int> _unsubscribe(String topic) async{
+    Future<int> unsubscribe(String topic) async{
       /// Finally, unsubscribe and exit gracefully
       print('Unsubscribing');
       client.unsubscribe(topic);
@@ -180,23 +187,26 @@ class MqttCommander {
       print('Ping response client callback invoked');
     }
 
-    send(String command, String param) async{
-      _initial();
-
-      await _connect();
-      await _publish(command, param);
-
-      await disconnect();
+    Future send(String command, String param) async{
+      
+      _publish(command, param);
 
     }
 
-    receive(String command) async{
-      _initial();
+    Future receive(String command, Function(String) callback) async{
+      print('test entry receive function.');
+      _subscribe(command);
 
-      await _connect();
-      await _subscribe(command);
+      client.updates.listen((List<MqttReceivedMessage<MqttMessage>> list) { 
 
-      await _unsubscribe(command);
+        final MqttPublishMessage receivedPayload = list[0].payload;
+        final String message = MqttPublishPayload.bytesToStringAsString(receivedPayload.payload.message);
+
+        print('notification: topic is <${list[0].topic}>, payload message is <-- $message -->');
+
+        if(callback != null)
+          callback(message);
+      });
     }
 
 }

@@ -8,4 +8,11 @@ class Commands {
 
   static const String CCTV_CONTROL = 'topic/camera/cctv';
 
+  static const String INDOOR_TEMPERATURE_HUMIDITY_DATA_READ = 'topic/indoor/measurement/read';
+
+  static const String INDOOR_TEMPERATURE_HUMIDITY_DATA_RECEIVE = 'topic/indoor/measurement/data';
+
+  static const String OUTDOOR_TEMPERATURE_HUMIDITY_DATA_READ = 'topic/outdoor/measurement/read';
+
+  static const String OUTDOOR_TEMPERATURE_HUMIDITY_DATA_RECEIVE = 'topic/outdoor/measurement/data';
 }

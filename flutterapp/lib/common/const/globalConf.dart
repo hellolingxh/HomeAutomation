@@ -22,6 +22,10 @@ class GlobalConfig {
 
     static const int AWS_ACTIVEMQ_LISTEN_PORT = 8883;
 
+    static const String INDOOR = 'indoor';
+
+    static const String OUTDOOR = 'outdoor';
+
     static const String MQTT_CLIENT_IDENTIFIER_LIGHT = 'Light_MQTT_Client';
 
     static const String MQTT_CLIENT_IDENTIFIER_FAN = 'Fan_MQTT_Client';
@@ -29,5 +33,7 @@ class GlobalConfig {
     static const String MQTT_CLIENT_IDENTIFIER_SHUTTER = 'Shutter_MQTT_Client';
 
     static const String MQTT_CLIENT_IDENTIFIER_CAMERA = 'Camera_MQTT_Client';
+
+    static const String MQTT_CLIENT_IDENTIFIER_ATMOSPHERE = 'Atmosphere_MQTT_Client';
 
 }

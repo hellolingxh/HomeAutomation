@@ -5,15 +5,15 @@ import 'package:flutterapp/common/util/googleSpeechRecognition.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
 
 class LightWidget extends StatefulWidget {
-  final int type; // to decide the control either WiFi or Internet
+  final int networkType; // to decide the control either WiFi or Internet
 
-  LightWidget(this.type);
+  LightWidget(this.networkType);
 
   @override
   State<StatefulWidget> createState() {
     _LightState _state ;
     
-    if(type == 0)
+    if(networkType == 0)
       _state = new _LightState( new MqttCommander(
                     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
                     GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
@@ -38,16 +38,22 @@ class LightWidget extends StatefulWidget {
 
 class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
 
-  final MqttCommander commander;
+  final MqttCommander _commander;
 
   bool _isLightOn = false;
 
-  _LightState(this.commander);
+  _LightState(this._commander);
 
   @override
   void initState() {
     super.initState();
     initSpeechRecognizer();
+  }
+
+  @override 
+  void dispose() {
+    super.dispose();
+    _commander.disconnect();
   }
 
   @override
@@ -98,7 +104,7 @@ class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
                         Switch(
                             value: _isLightOn,
                             onChanged: (bool value){
-                                commander.send(Commands.LIGHT_CONTROL, _isLightOn ? 'off' : 'on');
+                                _commander.send(Commands.LIGHT_CONTROL, _isLightOn ? 'off' : 'on');
                                 setState(() {
                                   _isLightOn = _isLightOn ? false : true; //notificate the flutter to refresh to component.
                                 });
@@ -161,7 +167,7 @@ class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
       isComplete = true;
     });
     if(resultText=='light on' || resultText=='light off')
-      commander.send(Commands.LIGHT_CONTROL, _isLightOn ? 'on' : 'off');
+      _commander.send(Commands.LIGHT_CONTROL, _isLightOn ? 'on' : 'off');
   }
 
 }

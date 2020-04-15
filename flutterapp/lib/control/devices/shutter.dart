@@ -10,13 +10,19 @@ class ShutterWidget extends StatefulWidget {
 
 class _ShutterState extends State {
 
-  final MqttCommander commander = new MqttCommander(
+  final MqttCommander _commander = new MqttCommander(
     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
     GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
     GlobalConfig.MQTT_CLIENT_IDENTIFIER_SHUTTER
   );
 
-  String shutterAction = "stop";
+  String _shutterAction = "stop";
+
+  @override 
+  void dispose() {
+    super.dispose();
+    _commander.disconnect();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,20 +70,20 @@ class _ShutterState extends State {
                         IconButton(icon: new Icon(Icons.arrow_left, size: 48, 
                             color: Colors.blueAccent,), 
                             onPressed: (){
-                              shutterAction = 'left';
-                              commander.send(Commands.SHUTTER_CONTROL, shutterAction);
+                              _shutterAction = 'left';
+                              _commander.send(Commands.SHUTTER_CONTROL, _shutterAction);
                         }),
                         IconButton(icon: new Icon(Icons.stop, size: 48, 
                             color: Colors.blueAccent,), 
                             onPressed: (){
-                              shutterAction = 'stop';
-                              commander.send(Commands.SHUTTER_CONTROL, shutterAction);
+                              _shutterAction = 'stop';
+                              _commander.send(Commands.SHUTTER_CONTROL, _shutterAction);
                         },),
                         IconButton(icon: new Icon(Icons.arrow_right, size: 48, 
                             color: Colors.blueAccent,), 
                             onPressed: (){
-                              shutterAction = 'right';
-                              commander.send(Commands.SHUTTER_CONTROL, shutterAction);
+                              _shutterAction = 'right';
+                              _commander.send(Commands.SHUTTER_CONTROL, _shutterAction);
                         },)
                     ],
                 )

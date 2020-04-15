@@ -13,13 +13,19 @@ class CCTVWidget extends StatefulWidget {
 
 class _CCTVState extends State<CCTVWidget> {
 
-  final MqttCommander commander = new MqttCommander(
+  final MqttCommander _commander = new MqttCommander(
     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
     GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
     GlobalConfig.MQTT_CLIENT_IDENTIFIER_CAMERA
   );
 
-  bool isLoading = false;
+  bool _isLoading = false;
+
+  @override 
+  void dispose() {
+    super.dispose();
+    _commander.disconnect();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +73,7 @@ class _CCTVState extends State<CCTVWidget> {
                                     height: 260,
                                     margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
                                     alignment: Alignment.topRight,
-                                    child: isLoading==false ? 
+                                    child: _isLoading==false ? 
                                           Center(child: CircularProgressIndicator()) :  
                                           MjpegView(url: GlobalConfig.CCTV_VIDEO_STREAM_URL, fps: 100),
                                     ),
@@ -75,10 +81,10 @@ class _CCTVState extends State<CCTVWidget> {
                         IconButton(
                             icon: Icon(Icons.videocam, size:40,),
                             onPressed: () {
-                                commander.send(Commands.CCTV_CONTROL, isLoading ? 'off' : 'on');
-                                updateVideoState();
+                                _commander.send(Commands.CCTV_CONTROL, _isLoading ? 'off' : 'on');
+                                _updateVideoState();
                             },
-                            color: isLoading == false ? Colors.grey : Colors.blue,
+                            color: _isLoading == false ? Colors.grey : Colors.blue,
                         ),
                 ],
             ),
@@ -86,11 +92,11 @@ class _CCTVState extends State<CCTVWidget> {
       );
   }
 
-  void updateVideoState() async {
+  void _updateVideoState() async {
     //when the command has already sent to CCTV, then will get the live video after 3 seconds.
     await Future.delayed(const Duration(milliseconds: 3000), () {
       setState(() {
-        isLoading = isLoading ? false : true; //notificate the flutter to refresh to component.
+        _isLoading = _isLoading ? false : true; //notificate the flutter to refresh to component.
       });
     });
     

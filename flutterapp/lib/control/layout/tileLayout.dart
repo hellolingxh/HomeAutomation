@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/ui/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
+import 'package:flutterapp/control/devices/atmosphere.dart';
 import 'package:flutterapp/control/devices/cctv.dart';
 import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/option/lightControlOption.dart';
@@ -22,17 +24,19 @@ List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
 const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
-CCTVWidget cctvWidgetCallback() => CCTVWidget();
-LightControlOptionWidget lightOptionWidgetCallback() => LightControlOptionWidget();
-FanWidget fanWidgetCallback() => FanWidget();
-ShutterWidget shutterControlWidgetCallback() => ShutterWidget();
+CCTVWidget cctvWidget() => CCTVWidget();
+LightControlOptionWidget lightOptionWidget() => LightControlOptionWidget();
+FanWidget fanWidget() => FanWidget();
+ShutterWidget shutterControlWidget() => ShutterWidget();
+AtmosphereWidget indoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.INDOOR);
+AtmosphereWidget outdoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.OUTDOOR);
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
     const TileCard(
             'CCTV', 
             textStyle, 
-            cctvWidgetCallback,
+            cctvWidget,
             Colors.pinkAccent,
             Icon(
                 FlutterCustomIcon.videocam,
@@ -43,7 +47,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Fan', 
             textStyle, 
-            fanWidgetCallback,
+            fanWidget,
             Colors.cyanAccent,
             Icon(
                 Icons.device_hub,
@@ -54,7 +58,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Shutter', 
             textStyle, 
-            shutterControlWidgetCallback,
+            shutterControlWidget,
             Colors.green,
             Icon(
                 Icons.shutter_speed,
@@ -65,7 +69,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Outdoor', 
             smallTextStyle, 
-            null,
+            outdoorAtmosphereWidget,
             Colors.purpleAccent,
             Icon(
                 FlutterCustomIcon.thermometer,
@@ -76,7 +80,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Indoor', 
             smallTextStyle, 
-            null,
+            indoorAtmosphereWidget,
             Colors.cyan,
             Icon(
                 FlutterCustomIcon.thermometer,
@@ -96,9 +100,9 @@ List<Widget> tiles = const <Widget> [
             )
         ),
     const TileCard(
-            'Lighting', 
+            'Light', 
             textStyle, 
-            lightOptionWidgetCallback,
+            lightOptionWidget,
             Colors.lightBlue,
             Icon(
                 FlutterCustomIcon.lamp,
