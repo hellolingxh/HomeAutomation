@@ -4,6 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'dart:async';
 
+/**
+ * 
+ * This class encapsulate the feature that receive the video stream through http protocol. 
+ * 
+ */
 class MjpegView extends StatefulWidget {
   MjpegView({this.url, this.fps});
 

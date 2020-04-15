@@ -44,22 +44,10 @@ class MqttCommander {
       /// to create a mqtt client
       client = new MqttClient.withPort(host, clientIdentifier, port);
 
-      /// A websocket URL must start with ws:// or wss:// or Dart will throw an exception, consult your websocket MQTT broker
-      /// for details.
-      /// To use websockets add the following lines -:
-      /// client.useWebSocket = true;
-      /// client.port = 80;  ( or whatever your WS port is)
-      /// There is also an alternate websocket implementation for specialist use, see useAlternateWebSocketImplementation
-      /// Note do not set the secure flag if you are using wss, the secure flags is for TCP sockets only.
-      /// You can also supply your own websocket protocol list or disable this feature using the websocketProtocols
-      /// setter, read the API docs for further details here, the vast majority of brokers will support the client default
-      /// list so in most cases you can ignore this.
-
       /// Set logging on if needed, defaults to off
       client.logging(on: false);
 
       /// If you intend to use a keep alive value in your connect message that is not the default(60s)
-      /// you must set it here
       client.keepAlivePeriod = 20;
 
       /// Add the unsolicited disconnection callback
@@ -69,23 +57,20 @@ class MqttCommander {
       client.onConnected = onConnected;
 
       /// Add a subscribed callback, there is also an unsubscribed callback if you need it.
-      /// You can add these before connection or change them dynamically after connection if
-      /// you wish. There is also an onSubscribeFail callback for failed subscriptions, these
-      /// can fail either because you have tried to subscribe to an invalid topic or the broker
-      /// rejects the subscribe request.
       client.onSubscribed = onSubscribed;
 
       /// Set a ping received callback if needed, called whenever a ping response(pong) is received
       /// from the broker.
       client.pongCallback = pong;
 
+      // Specific the definition protocol version.
       client.setProtocolV311();
 
+      // The data transimission through the secure way.
       client.secure = secure;
 
-      /// Create a connection message to use or use the default one. The default one sets the
-      /// client identifier, any supplied username/password, the default keepalive interval(60s)
-      /// and clean session, an example of a specific one below.
+      /// Create a connection message to use or use the default one. 
+      /// the default keepalive interval(60s)
       final MqttConnectMessage connMess = MqttConnectMessage()
           .withClientIdentifier(clientIdentifier)
           .keepAliveFor(20) // Must agree with the keep alive set above or not set
@@ -187,12 +172,15 @@ class MqttCommander {
       print('Ping response client callback invoked');
     }
 
+    ///To send the message according to the command which is a topic concept on MQTT.
     Future send(String command, String param) async{
       
       _publish(command, param);
 
     }
 
+    ///To receive the message from broker according to the specific command which 
+    ///is a topic concept on MQTT, then called the callback method passed by caller.
     Future receive(String command, Function(String) callback) async{
       print('test entry receive function.');
       _subscribe(command);
