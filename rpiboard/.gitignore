@@ -1,0 +1,6 @@
+Pipfile.lock
+__pycache__/
+build/
+dist/
+main.spec
+

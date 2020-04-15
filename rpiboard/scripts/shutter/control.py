@@ -1,21 +1,19 @@
 import RPi.GPIO as GPIO
+from config import SHUTTER_DIR_CHANNEL_1, SHUTTER_PWM_CHANNEL_2
 import time
 
 GPIO.setmode(GPIO.BCM)
 
-dir_channel_1=4
-pwm_channel_2=13
-
 GPIO.setwarnings(False)
-GPIO.setup(dir_channel_1, GPIO.OUT)
-GPIO.setup(pwm_channel_2, GPIO.OUT)
+GPIO.setup(SHUTTER_DIR_CHANNEL_1, GPIO.OUT)
+GPIO.setup(SHUTTER_PWM_CHANNEL_2, GPIO.OUT)
 
-pwm=GPIO.PWM(pwm_channel_2, 100)
+speed=70;
 
-speed=100;
+pwm=GPIO.PWM(SHUTTER_PWM_CHANNEL_2, speed)
 
 def speedup(direction):
-    GPIO.output(dir_channel_1, direction)
+    GPIO.output(SHUTTER_DIR_CHANNEL_1, direction)
     pwm.ChangeDutyCycle(speed)
     
 def shutterMove(direction):
