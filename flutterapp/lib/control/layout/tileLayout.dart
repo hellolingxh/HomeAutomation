@@ -5,6 +5,7 @@ import 'package:flutterapp/common/ui/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/devices/atmosphere.dart';
 import 'package:flutterapp/control/devices/cctv.dart';
+import 'package:flutterapp/control/devices/doorAccess.dart';
 import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/option/lightControlOption.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
@@ -30,6 +31,7 @@ FanWidget fanWidget() => FanWidget();
 ShutterWidget shutterControlWidget() => ShutterWidget();
 AtmosphereWidget indoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.INDOOR);
 AtmosphereWidget outdoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.OUTDOOR);
+DoorAccessWidget doorAccessWidget() => DoorAccessWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
@@ -113,7 +115,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Door', 
             textStyle, 
-            null,
+            doorAccessWidget,
             Colors.grey,
             Icon(
                 FlutterCustomIcon.enter,

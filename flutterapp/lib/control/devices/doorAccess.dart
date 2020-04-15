@@ -1,29 +1,42 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/mjpegViewer.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
 
-class CCTVWidget extends StatefulWidget {
-
+class DoorAccessWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _CCTVState();
+  State<StatefulWidget> createState() => _DoorAccessState();
 
 }
 
-class _CCTVState extends State<CCTVWidget> {
+class _DoorAccessState extends State<StatefulWidget> {
 
   final MqttCommander _commander = new MqttCommander(
     GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
     GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
-    GlobalConfig.MQTT_CLIENT_IDENTIFIER_CCTV
+    GlobalConfig.MQTT_CLIENT_IDENTIFIER_DOORACCESS
   );
 
   bool _isVideoLoading = false;
+  bool _isLocked = true;
 
-  @override 
-  void dispose() {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 1), (){
+      ///to notify the door camera to turn on.
+      _commander.send(Commands.DOOR_CAMERA_CONTROL, "on");
+    });
+    
+  }
+
+  @override
+  void dispose(){
     super.dispose();
+    _isVideoLoading = false;
+    _commander.send(Commands.DOOR_CAMERA_CONTROL, "off");
     _commander.disconnect();
   }
 
@@ -33,7 +46,7 @@ class _CCTVState extends State<CCTVWidget> {
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("CCTV Control Panel"),
+                title: Text("Door Access Control Panel"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,
@@ -60,7 +73,9 @@ class _CCTVState extends State<CCTVWidget> {
   }
 
   Widget _buildBody(){
-      
+      /// To notifiy the UI engine to re-render.
+      _updateVideoState();
+
       return new Container(
           child: new Center(
                  child: Column(
@@ -73,33 +88,53 @@ class _CCTVState extends State<CCTVWidget> {
                                     height: 260,
                                     margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
                                     alignment: Alignment.topRight,
-                                    child: _isVideoLoading==false ? 
+                                    child: !_isVideoLoading ? 
                                           Center(child: CircularProgressIndicator()) :  
-                                          MjpegView(url: GlobalConfig.CCTV_VIDEO_STREAM_URL, fps: 100),
-                                    ),
+                                          MjpegView(url: 'http://192.168.8.133:8088/?action=stream', fps: 200),
+                                ),
                         ),
-                        IconButton(
-                            icon: Icon(Icons.videocam, size:40,),
-                            onPressed: () {
-                                _commander.send(Commands.CCTV_CONTROL, _isVideoLoading ? 'off' : 'on');
-                                _updateVideoState();
-                            },
-                            color: _isVideoLoading == false ? Colors.grey : Colors.blue,
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                                lockButtonWidget(),
+                                
+                            ],
                         ),
+                        
                 ],
             ),
           ),
       );
   }
 
+
+  Widget lockButtonWidget (){
+      return IconButton(
+                icon: Icon(((_isLocked) ? Icons.lock: Icons.lock_open), size:40,),
+                onPressed: () {
+                    setState(() {
+                        _isLocked = _isLocked ? false : true;
+                    });
+                    
+                    _commander.send(Commands.DOOR_LOCKER_CONTROL, _isLocked ? "lock" : "unlock");
+                    
+                },
+                color: Colors.blue,
+            );
+  }
+
   void _updateVideoState() async {
     //when the command has already sent to CCTV, then will get the live video after 3 seconds.
-    await Future.delayed(const Duration(milliseconds: 3000), () {
-      setState(() {
-        _isVideoLoading = _isVideoLoading ? false : true; //notificate the flutter to refresh to component.
-      });
+    await Future.delayed(const Duration(milliseconds: 2500), () {
+      if(!_isVideoLoading){
+        setState(() {
+          _isVideoLoading = true; //notificate the flutter to refresh to component.
+        });
+      }
+      
     });
     
   }
-  
+
+
 }

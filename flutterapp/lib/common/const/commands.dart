@@ -15,4 +15,8 @@ class Commands {
   static const String OUTDOOR_TEMPERATURE_HUMIDITY_DATA_READ = 'topic/outdoor/measurement/read';
 
   static const String OUTDOOR_TEMPERATURE_HUMIDITY_DATA_RECEIVE = 'topic/outdoor/measurement/data';
+
+  static const String DOOR_LOCKER_CONTROL = 'topic/door/lock/control';
+
+  static const String DOOR_CAMERA_CONTROL = 'topic/door/camera/control';
 }

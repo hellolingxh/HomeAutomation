@@ -32,8 +32,10 @@ class GlobalConfig {
 
     static const String MQTT_CLIENT_IDENTIFIER_SHUTTER = 'Shutter_MQTT_Client';
 
-    static const String MQTT_CLIENT_IDENTIFIER_CAMERA = 'Camera_MQTT_Client';
+    static const String MQTT_CLIENT_IDENTIFIER_CCTV = 'CCTV_MQTT_Client';
 
     static const String MQTT_CLIENT_IDENTIFIER_ATMOSPHERE = 'Atmosphere_MQTT_Client';
+
+    static const String MQTT_CLIENT_IDENTIFIER_DOORACCESS = 'DoorAccess_MQTT_Client';
 
 }
