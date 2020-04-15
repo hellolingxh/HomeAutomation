@@ -99,7 +99,7 @@ class _LightNavigator extends State<LightNavigator> {
                         padding: EdgeInsets.all(8.0),
                         splashColor: Colors.blueAccent,
                         child: Text(
-                            'Navigator',
+                            'Next',
                             style: new TextStyle(
                                 fontSize: 16.0,
                             ),),
