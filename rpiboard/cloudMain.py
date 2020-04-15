@@ -26,11 +26,10 @@ def on_message(client, userdata, message):
             lightOff()
  
 def cloud_main():
-    print('test...')
     broker_address="b-ddb6ba7b-55f1-4ad2-b3c9-7754a11843ac-1.mq.eu-west-1.amazonaws.com"
     print('connecting ',broker_address)
     client = mqtt.Client('Console')
-    client.username_pw_set('', '')
+    client.username_pw_set('mqtt', '1qaz@WSX3edc')
     client.on_connect=on_connect
     client.on_message=on_message
     client.tls_set('/home/pi/cert/AmazonRootCA1.pem')
