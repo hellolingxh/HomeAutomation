@@ -1,6 +1,13 @@
 import 'dart:async';
 import 'package:mqtt_client/mqtt_client.dart';
 
+/**
+ * 
+ * This class encapsulate the MQTT Client that 
+ * is implemented by the examples 
+ * of official flutter mqtt client provided. 
+ * 
+ */
 class MqttCommander {
 
     String host; //MQTT Server Host Address
