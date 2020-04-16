@@ -1,18 +1,13 @@
 #! /usr/bin/python3.7
 import Adafruit_DHT
 from config import INDOOR_DHT_PIN
+from scripts.atmosphere.atmosphereData import read
 import time
 
 INDOOR_DHT_SENSOR = Adafruit_DHT.AM2302
        
-def indoorAtmosphereRead():
-    humidity, temperature = Adafruit_DHT.read_retry(INDOOR_DHT_SENSOR, INDOOR_DHT_PIN)
-    
-    if humidity is not None and temperature is not None:
-        print("Temp={0:0.1f}*C  Humidity={1:0.1f}%".format(temperature, humidity))
-        return "{0:0.1f}|{1:0.1f}".format(temperature, humidity)
-    else:
-        print("Failed to retrieve data from humidity sensor")
+def indoorAtmosphereDataRead():
+    return read(INDOOR_DHT_SENSOR, INDOOR_DHT_PIN)
     
     
               

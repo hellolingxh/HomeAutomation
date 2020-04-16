@@ -2,38 +2,28 @@
 import sys
 sys.path.append('/opt/rpiboard')
 
-import RPi.GPIO as GPIO
-import config
+from config import MQTT_CLIENT_IDENTIFIER, MQTT_BROKER_ADDRESS
 from scripts.cctv.control import cctvOn, cctvOff
 from scripts.light.control import lightOn, lightOff
 from scripts.fan.control import fanOff, fanSpeed
 from scripts.shutter.control import shutterMove, shutterStop
-from scripts.door.bell.control import bellOn, bellOff, bellCallBack
+from scripts.door.bell.control import bellListenning
 from scripts.door.lock.control import lock, unlock
 from scripts.door.camera.control import cameraOn, cameraOff
-from scripts.atmosphere.indoor.control import indoorAtmosphereRead
-from scripts.atmosphere.outdoor.control import outdoorAtmosphereRead
+from scripts.atmosphere.indoor.control import indoorAtmosphereDataRead
+from scripts.atmosphere.outdoor.control import outdoorAtmosphereDataRead
+from cloud import main as cloudMain
 import paho.mqtt.client as mqtt
-from cloudMain import cloud_main
 import _thread
 import time
 
     
 print("creating new instance")
-client = mqtt.Client(config.MQTT_CLIENT_IDENTIFIER) #create new instance
+client = mqtt.Client(MQTT_CLIENT_IDENTIFIER) #create new instance
 
 print("connecting to broker")
-client.connect(config.MQTT_BROKER_ADDRESS) #connect to broker
+client.connect(MQTT_BROKER_ADDRESS) #connect to broker
 
-def button_callback(button_channel):
-    print('button pressed')
-    client.publish("topic/door/bell/control", "on")
-
-def atmosphere_publish(topic, message):
-    print("temperature publish", message)
-    client.publish(topic, message)
-
-bellCallBack(button_callback)
 
 def on_message(client, userdata, message):
     status = str(message.payload.decode("utf-8"))
@@ -44,21 +34,21 @@ def on_message(client, userdata, message):
     
     if message.topic=='topic/camera/cctv':
         if status=='on':
-            print("camera on")
+            print("turn camera on")
             cctvOn()
         else:
-            print("camera off")
+            print("turn camera off")
             cctvOff()
     elif message.topic=='topic/light/control':
         if status=='on':
-            print('light on by WIFI')
+            print('turn light on by WIFI')
             lightOn()
         else:
-            print('light off by WIFI')
+            print('turn light off by WIFI')
             lightOff()
     elif message.topic=='topic/fan/control':
         if status=='off':
-            print('fan off')
+            print('turn fan off')
             fanOff()
         elif status.isnumeric():
             print('fan speed adjust')
@@ -72,10 +62,10 @@ def on_message(client, userdata, message):
             shutterMove(status)
     elif message.topic=='topic/door/camera/control':
         if status=='on':
-            print("door camera on")
+            print("turn door camera on")
             cameraOn()
         else:
-            print("door camera off")
+            print("turn door camera off")
             cameraOff()
     elif message.topic=='topic/door/lock/control':
         if status=='lock':
@@ -86,24 +76,17 @@ def on_message(client, userdata, message):
             unlock()
     elif message.topic=='topic/indoor/measurement/read':
         if status=='on':
-            print("indoor measurement read switch on")
+            print("indoor measurement reading switch on")
             result = indoorAtmosphereRead()
             atmosphere_publish("topic/indoor/measurement/data", result)
     elif message.topic=='topic/outdoor/measurement/read':
         if status=='on':
-            print("outdoor measurement read switch on")
+            print("outdoor measurement reading switch on")
             result = outdoorAtmosphereRead()
             atmosphere_publish("topic/outdoor/measurement/data", result)
             
 client.on_message=on_message #attach function to callback
             
-def bell():
-    while True:
-        time.sleep(1)
-        if GPIO.input(config.DOORBUTTON_CHANNEL) == False:
-            bellOn()
-        else:
-            bellOff()
         
 ########################################
 def main():
@@ -133,8 +116,8 @@ def main():
 if __name__ == "__main__":
     try:
         _thread.start_new_thread( main, () )
-        _thread.start_new_thread( cloud_main, () )
-        _thread.start_new_thread( bell, () )
+        _thread.start_new_thread( cloudMain, () )
+        _thread.start_new_thread( bellListenning, () )
     except:
         print ("Error: unable to start thread")
     
