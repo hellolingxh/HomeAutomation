@@ -37,6 +37,13 @@ dependencies:
   # google assistance voice  recognition
   speech_recognition: ^0.3.0+1
 
+  # A cross platform plugin for displaying local notifications.
+  flutter_local_notifications: ^1.2.2
+
+  # Run a thread on background
+  background_fetch: ^0.5.4
+  shared_preferences: ^0.5.6+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,10 +84,10 @@ flutter:
     - statics/icons/remote_control.jpg
     - statics/icons/configuration.png
   #  - images/a_dot_ham.jpeg
-    - statics/cert/AmazonRootCA1.pem
-    - statics/cert/3a763a4f22-certificate.pem.crt
-    - statics/cert/3a763a4f22-private.pem.key
-    - statics/cert/3a763a4f22-public.pem.key
+    #- statics/cert/AmazonRootCA1.pem
+    #- statics/cert/3a763a4f22-certificate.pem.crt
+    #- statics/cert/3a763a4f22-private.pem.key
+    #- statics/cert/3a763a4f22-public.pem.key
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

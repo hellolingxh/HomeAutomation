@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/card/myTileCard.dart';
-import 'package:flutterapp/common/card/myTileImageCart.dart';
-import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
+import 'package:flutterapp/common/ui/imageTileCart.dart';
+import 'package:flutterapp/common/ui/tileCard.dart';
+import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/deviceControlPanel.dart';
-
-final ThemeData _kTheme = new ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.teal,
-  accentColor: Colors.redAccent,
-);
-
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2),
@@ -26,10 +19,10 @@ DeviceControlPanel deviceControlPanelCallback() => DeviceControlPanel();
 const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 
 List<Widget> tiles = const <Widget> [
-    const _TileImageCard(),
-    const MyTileImageCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),
-    const MyTileImageCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),
-    const MyTileCard(
+    const _HomeLogoCard(),
+    const ImageTileCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),
+    const ImageTileCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),
+    const TileCard(
             'Remote Control', 
             textStyle, 
             deviceControlPanelCallback,
@@ -40,24 +33,24 @@ List<Widget> tiles = const <Widget> [
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Data Statistics',
             textStyle, 
             deviceControlPanelCallback,
             Colors.orange,
             Icon(
-                Flutter_custom_icon.chart_line,
+                FlutterCustomIcon.chart_line,
                 size: 50,
                 color: Colors.pink,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Configuration', 
             textStyle, 
             deviceControlPanelCallback,
             Colors.cyan,
             Icon(
-               Flutter_custom_icon.cog_alt,
+               FlutterCustomIcon.cog_alt,
                 size: 50,
                 color: Colors.white,
             )            
@@ -73,9 +66,9 @@ StaggeredGridView staggeredGridView = new StaggeredGridView.count(
                 padding: const EdgeInsets.all(0.0),
 );
 
-class _TileImageCard extends StatelessWidget {
+class _HomeLogoCard extends StatelessWidget {
 
-  const _TileImageCard();
+  const _HomeLogoCard();
 
   @override
   Widget build(BuildContext context) {
@@ -87,44 +80,4 @@ class _TileImageCard extends StatelessWidget {
     );
   }
     
-}
-
-class _TileCard extends StatelessWidget {
-  const _TileCard(this.backgroundColor, this.iconData);
-
-  final Color backgroundColor;
-  final IconData iconData;
-
-  @override
-  Widget build(BuildContext context) {
-
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return new Card(
-        color: backgroundColor,
-        child: new InkWell(
-            onTap: () {navigate(context);},
-            splashColor: colorScheme.onSurface.withOpacity(0.12),
-            child: new Center(
-                child: new Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: new Icon(
-                        iconData,
-                        color: Colors.red,
-                    ),
-                ),
-            ),
-        )
-    );
-  }
-
-  void navigate(BuildContext context){
-      Navigator.push(context, MaterialPageRoute<void>(
-          builder: (BuildContext context){
-              return Theme(
-                  data: _kTheme.copyWith(platform: Theme.of(context).platform),
-                  child: DeviceControlPanel(),
-              );
-          }
-      ));
-  }
 }

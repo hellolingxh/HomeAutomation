@@ -39,8 +39,8 @@
 ///
 import 'package:flutter/widgets.dart';
 
-class Flutter_custom_icon {
-  Flutter_custom_icon._();
+class FlutterCustomIcon {
+  FlutterCustomIcon._();
 
   static const _kFontFam = 'Flutter_custom_icon';
 

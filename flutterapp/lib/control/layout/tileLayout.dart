@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/card/myTileCard.dart';
-import 'package:flutterapp/common/icon/flutter_custom_icon_icons.dart';
-import 'package:flutterapp/control/devices/camera.dart';
-import 'package:flutterapp/control/devices/door.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
+import 'package:flutterapp/common/ui/tileCard.dart';
+import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
+import 'package:flutterapp/control/devices/atmosphere.dart';
+import 'package:flutterapp/control/devices/cctv.dart';
+import 'package:flutterapp/control/devices/doorAccess.dart';
 import 'package:flutterapp/control/devices/fan.dart';
-import 'package:flutterapp/control/devices/light_navigator.dart';
+import 'package:flutterapp/control/option/lightControlOption.dart';
 import 'package:flutterapp/control/devices/shutter.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
@@ -23,29 +25,31 @@ List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
 const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
-CameraWidget cameraWidgetCallback() => CameraWidget();
-LightNavigator lightWidgetCallback() => LightNavigator();
-FanWidget fanWidgetCallback() => FanWidget();
-ShutterControlWidget shutterControlWidgetCallback() => ShutterControlWidget();
-DoorWidget doorWidgetCallback() => DoorWidget();
+CCTVWidget cctvWidget() => CCTVWidget();
+LightControlOptionWidget lightOptionWidget() => LightControlOptionWidget();
+FanWidget fanWidget() => FanWidget();
+ShutterWidget shutterControlWidget() => ShutterWidget();
+AtmosphereWidget indoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.INDOOR);
+AtmosphereWidget outdoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.OUTDOOR);
+DoorAccessWidget doorAccessWidget() => DoorAccessWidget();
 
 List<Widget> tiles = const <Widget> [
     const _TileImageCard(),
-    const MyTileCard(
+    const TileCard(
             'CCTV', 
             textStyle, 
-            cameraWidgetCallback,
+            cctvWidget,
             Colors.pinkAccent,
             Icon(
-                Flutter_custom_icon.videocam,
+                FlutterCustomIcon.videocam,
                 size: 50,
                 color: Colors.white,
             )
          ),
-    const MyTileCard(
+    const TileCard(
             'Fan', 
             textStyle, 
-            fanWidgetCallback,
+            fanWidget,
             Colors.cyanAccent,
             Icon(
                 Icons.device_hub,
@@ -53,10 +57,10 @@ List<Widget> tiles = const <Widget> [
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Shutter', 
             textStyle, 
-            shutterControlWidgetCallback,
+            shutterControlWidget,
             Colors.green,
             Icon(
                 Icons.shutter_speed,
@@ -64,57 +68,57 @@ List<Widget> tiles = const <Widget> [
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Outdoor', 
             smallTextStyle, 
-            null,
+            outdoorAtmosphereWidget,
             Colors.purpleAccent,
             Icon(
-                Flutter_custom_icon.thermometer,
+                FlutterCustomIcon.thermometer,
                 size: 20,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Indoor', 
             smallTextStyle, 
-            null,
+            indoorAtmosphereWidget,
             Colors.cyan,
             Icon(
-                Flutter_custom_icon.thermometer,
+                FlutterCustomIcon.thermometer,
                 size: 20,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Entertainment', 
             textStyle, 
             null,
             Colors.greenAccent,
             Icon(
-                Flutter_custom_icon.gamepad,
+                FlutterCustomIcon.gamepad,
                 size: 50,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
-            'Lighting', 
+    const TileCard(
+            'Light', 
             textStyle, 
-            lightWidgetCallback,
+            lightOptionWidget,
             Colors.lightBlue,
             Icon(
-                Flutter_custom_icon.lamp,
+                FlutterCustomIcon.lamp,
                 size: 30,
                 color: Colors.white,
             )
         ),
-    const MyTileCard(
+    const TileCard(
             'Door', 
             textStyle, 
-            doorWidgetCallback,
+            doorAccessWidget,
             Colors.grey,
             Icon(
-                Flutter_custom_icon.enter,
+                FlutterCustomIcon.enter,
                 size: 30,
                 color: Colors.white,
             )
@@ -142,33 +146,6 @@ class _TileImageCard extends StatelessWidget {
         elevation: 10,
         shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
         child: Image.asset('statics/images/devices.png', fit: BoxFit.fill,),
-    );
-  }
-    
-}
-
-class _TileCard extends StatelessWidget {
-  const _TileCard(this.backgroundColor, this.iconData);
-
-  final Color backgroundColor;
-  final IconData iconData;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Card(
-        color: backgroundColor,
-        child: new InkWell(
-            onTap: () { debugPrint('message test');},
-            child: new Center(
-                child: new Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: new Icon(
-                        iconData,
-                        color: Colors.white,
-                    ),
-                ),
-            ),
-        )
     );
   }
 

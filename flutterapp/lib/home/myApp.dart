@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../common/const/globalConf.dart';
 import 'appHome.dart';
-
 
 class MyApp extends StatefulWidget {
 
@@ -11,6 +9,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
 
@@ -18,7 +17,7 @@ class _MyAppState extends State<MyApp> {
         title: 'My Home Automation',
         color: Colors.grey,
         home: AppHome(),
-        routes: GlobalConfig.ROUTES
+        routes: {'/home': (_)=> new AppHome()}
     );
 
   }

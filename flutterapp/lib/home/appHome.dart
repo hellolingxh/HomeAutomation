@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'layouts/tileLayout.dart';
+import 'layout/tileLayout.dart';
 
 class AppHome extends StatefulWidget {
   @override

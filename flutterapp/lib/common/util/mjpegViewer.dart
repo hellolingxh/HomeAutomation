@@ -1,22 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:typed_data';
 import 'dart:async';
 
+/**
+ * 
+ * This class encapsulate the feature that receive the video stream through http protocol. 
+ * 
+ */
 class MjpegView extends StatefulWidget {
   MjpegView({this.url, this.fps});
 
-  String url;
-  int fps;
+  final String url;
+  final int fps;
 
   @override
-  MjpegViewState createState() => MjpegViewState();
+  State<MjpegView> createState() => _MjpegViewState();
 }
 
-class MjpegViewState extends State<MjpegView> {
+class _MjpegViewState extends State<MjpegView> {
   Image mjpeg;
   var imgBuf;
   Stopwatch timer = Stopwatch();
@@ -31,6 +34,7 @@ class MjpegViewState extends State<MjpegView> {
   }
 
   void buildImageStream() {
+    
     var request = http.Request("GET", Uri.parse(widget.url));
 
     client.send(request).then((response) {
@@ -95,9 +99,6 @@ class MjpegViewState extends State<MjpegView> {
 
   @override
   Widget build(BuildContext context) {
-   
-    //buildImageStream();
-    
     return mjpeg == null ? new Center(child: CircularProgressIndicator()) : mjpeg;
 }
     
