@@ -4,6 +4,7 @@ import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
+import 'package:flutterapp/home/appHome.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
 class AtmosphereWidget extends StatefulWidget {
@@ -26,25 +27,28 @@ class _AtmosphereState extends State<AtmosphereWidget> {
     GlobalConfig.MQTT_CLIENT_IDENTIFIER_ATMOSPHERE
   );
 
-  String _thermometerValue = GlobalConfig.DEFAULT_INITIAL_TEMPERATURE_VALUE;
+  String _temperatureValue = GlobalConfig.DEFAULT_INITIAL_TEMPERATURE_VALUE;
   String _humidityValue = GlobalConfig.DEFAULT_INITIAL_HUMIDITY_VALUE;
 
-  bool _isPublishing;
+  /// To decide if it continuously read the data from the sensor.
+  bool _isPlanToRead;
 
-  final int intervalSeconds = 1;
+  ///To specific the interval seconds of the reading data from the sensor.
+  ///Here just given the default value is 1 second interval between each read.
+  final int readIntervalSeconds = 1;
 
   @override
   void initState() {
     super.initState();
-    _isPublishing = true;
+    _isPlanToRead = true;
     // notify the device to send the measurement data to mobile app interval.
-    publishInterval(intervalSeconds);
+    toReadValueFromSensor(readIntervalSeconds);
   }
 
   @override
   void dispose(){
     super.dispose();
-    _isPublishing = false;
+    _isPlanToRead = false;
     _commander.unsubscribe(
       widget.indoorOrOutdoor == GlobalConfig.INDOOR ? 
         Commands.INDOOR_TEMPERATURE_HUMIDITY_DATA_RECEIVE :
@@ -92,6 +96,14 @@ class _AtmosphereState extends State<AtmosphereWidget> {
                         title: new Text('Me', style: TextStyle(color: Colors.white),),
                     )
                 ],
+                onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+                    builder: (BuildContext context){
+                      return Theme(
+                          data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                          child: AppHome(),
+                      );
+                    }
+                )),
             ),
         );
   }
@@ -111,11 +123,11 @@ class _AtmosphereState extends State<AtmosphereWidget> {
                         Container(
                             height: 60,
                             margin: EdgeInsets.only(top: 15.0, bottom: 3.0),
-                            child: Text(_thermometerValue+GlobalConfig.CElSIUS_SYMBOL),
+                            child: Text(_temperatureValue+GlobalConfig.CElSIUS_SYMBOL),
                         ),
                         Container(
                             margin: EdgeInsets.all(30.0),
-                            child: Text("Humidity"),
+                            child: Text("Hygrometer"),
                         ),
                         Icon(FlutterCustomIcon.cog_alt, size: 60, color: Colors.orangeAccent),
                         Container(
@@ -130,9 +142,9 @@ class _AtmosphereState extends State<AtmosphereWidget> {
       );
     }
 
-    Future publishInterval(int second) async{
+    Future toReadValueFromSensor(int second) async{
       
-      while (_isPublishing){
+      while (_isPlanToRead){
         /// Publish the message to the topic
         _commander.send(
           widget.indoorOrOutdoor == GlobalConfig.INDOOR ?
@@ -148,7 +160,7 @@ class _AtmosphereState extends State<AtmosphereWidget> {
       if(message.contains("|")){
         List<String> result = message.split("|");
         setState(() {
-         _thermometerValue = result[0];
+         _temperatureValue = result[0];
          _humidityValue = result[1];
         });
         

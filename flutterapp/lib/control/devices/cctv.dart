@@ -3,6 +3,7 @@ import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/mjpegViewer.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
+import 'package:flutterapp/home/appHome.dart';
 
 class CCTVWidget extends StatefulWidget {
 
@@ -55,6 +56,14 @@ class _CCTVState extends State<CCTVWidget> {
                     title: new Text('Me', style: TextStyle(color: Colors.white),),
                 )
             ],
+            onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context){
+                  return Theme(
+                      data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                      child: AppHome(),
+                  );
+                }
+            )),
         ),
     );
   }

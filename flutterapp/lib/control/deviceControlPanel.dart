@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
+import 'package:flutterapp/home/appHome.dart';
 import '../control/layout/tileLayout.dart';
 
 class DeviceControlPanel extends StatefulWidget {
@@ -39,6 +41,14 @@ class _DeviceControlPanel extends State<DeviceControlPanel> {
                     title: new Text('Me', style: TextStyle(color: Colors.white),),
                 )
             ],
+            onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+              builder: (BuildContext context){
+                  return Theme(
+                      data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                      child: AppHome(),
+                  );
+              }
+            )),
         ),
     );
   }

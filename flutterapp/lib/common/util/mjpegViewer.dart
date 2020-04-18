@@ -4,11 +4,9 @@ import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'dart:async';
 
-/**
- * 
- * This class encapsulate the feature that receive the video stream through http protocol. 
- * 
- */
+/// 
+/// This class encapsulate the feature that receive the video stream through http protocol. 
+/// 
 class MjpegView extends StatefulWidget {
   MjpegView({this.url, this.fps});
 
@@ -20,31 +18,31 @@ class MjpegView extends StatefulWidget {
 }
 
 class _MjpegViewState extends State<MjpegView> {
-  Image mjpeg;
-  var imgBuf;
-  Stopwatch timer = Stopwatch();
+  Image _mjpeg;
+  var _imgBuf;
+  Stopwatch _timer = Stopwatch();
 
-  http.Client client = http.Client();
+  http.Client _client = http.Client();
   StreamSubscription videoStream;
 
   @override
   void initState() {
     super.initState();
-    buildImageStream();
+    _buildImageStream();
   }
 
-  void buildImageStream() {
+  void _buildImageStream() {
     
     var request = http.Request("GET", Uri.parse(widget.url));
 
-    client.send(request).then((response) {
+    _client.send(request).then((response) {
       var startIndex = -1;
       var endIndex = -1;
       List<int> buf = List<int>();
 
       Duration ts;
 
-      timer.start();
+      _timer.start();
 
       videoStream = response.stream.listen((List<int> data) {
         for (var i = 0; i < data.length - 1; i++) {
@@ -62,27 +60,27 @@ class _MjpegViewState extends State<MjpegView> {
         if (startIndex != -1 && endIndex != -1) {
           // print('start $startIndex, end $endIndex');
 
-          timer.stop();
-          ts = timer.elapsed;
+          _timer.stop();
+          ts = _timer.elapsed;
 
           if (ts.inMilliseconds > 1000 / widget.fps) {
             // print('duration ${ts.inMilliseconds / 1000}');
 
-            imgBuf = List<int>.from(buf.getRange(startIndex, endIndex + 2));
-            mjpeg = Image.memory(Uint8List.fromList(imgBuf));
+            _imgBuf = List<int>.from(buf.getRange(startIndex, endIndex + 2));
+            _mjpeg = Image.memory(Uint8List.fromList(_imgBuf));
 
-            precacheImage(mjpeg.image, context);
+            precacheImage(_mjpeg.image, context);
 
             Future.delayed(const Duration(milliseconds: 100)).then((_) {
               if (mounted) setState(() {});
             });
 
-            timer.reset();
+            _timer.reset();
           }
 
           startIndex = endIndex = -1;
           buf = List<int>();
-          timer.start();
+          _timer.start();
         }
       });
     });
@@ -90,16 +88,16 @@ class _MjpegViewState extends State<MjpegView> {
 
   @override
   void deactivate() {
-    timer?.stop();
+    _timer?.stop();
     videoStream?.cancel();
-    client?.close();
+    _client?.close();
 
     super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
-    return mjpeg == null ? new Center(child: CircularProgressIndicator()) : mjpeg;
+    return _mjpeg == null ? new Center(child: CircularProgressIndicator()) : _mjpeg;
 }
     
 }

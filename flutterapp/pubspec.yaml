@@ -78,11 +78,6 @@ flutter:
     - statics/images/flutter.png
     - statics/images/home_logo.jpg
     - statics/images/devices.png
-    - statics/images/outdoor.jpg
-    - statics/images/indoor.jpg
-    - statics/icons/statistics.png
-    - statics/icons/remote_control.jpg
-    - statics/icons/configuration.png
   #  - images/a_dot_ham.jpeg
     #- statics/cert/AmazonRootCA1.pem
     #- statics/cert/3a763a4f22-certificate.pem.crt

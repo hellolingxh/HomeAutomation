@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'package:mqtt_client/mqtt_client.dart';
 
-/**
- * 
- * This class encapsulate the MQTT Client that 
- * is implemented by the examples 
- * of official flutter mqtt client provided. 
- * 
- */
+/// 
+/// This class encapsulate the MQTT Client that 
+/// is implemented by the examples 
+/// of official flutter mqtt client provided. 
+/// 
 class MqttCommander {
 
     String host; //MQTT Server Host Address
@@ -189,7 +187,7 @@ class MqttCommander {
     ///To receive the message from broker according to the specific command which 
     ///is a topic concept on MQTT, then called the callback method passed by caller.
     Future receive(String command, Function(String) callback) async{
-      print('test entry receive function.');
+      
       _subscribe(command);
 
       client.updates.listen((List<MqttReceivedMessage<MqttMessage>> list) { 

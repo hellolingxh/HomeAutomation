@@ -1,11 +1,9 @@
 import 'package:speech_recognition/speech_recognition.dart';
 
-/**
- * 
- * This class encapsulate the google speech recognition features
- * into this project.
- * 
- */
+/// 
+/// This class encapsulate the google speech recognition features
+/// into this project.
+/// 
 abstract class GoogleSpeechRecognition {
 
   final SpeechRecognition speechRecognition = new SpeechRecognition();

@@ -3,9 +3,10 @@ import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/googleSpeechRecognition.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
+import 'package:flutterapp/home/appHome.dart';
 
 class LightWidget extends StatefulWidget {
-  final int networkType; // to decide the control either WiFi or Internet
+  final int networkType; // to decide the control through either WiFi or Internet
 
   LightWidget(this.networkType);
 
@@ -26,8 +27,8 @@ class LightWidget extends StatefulWidget {
                     GlobalConfig.AWS_ACTIVEMQ_LISTEN_PORT,
                     GlobalConfig.MQTT_CLIENT_IDENTIFIER_LIGHT,
                     isSecure: true,
-                    username: 'mqtt', 
-                    password: '1qaz@WSX3edc'
+                    username: GlobalConfig.AWS_ACTIVEMQ_USERNAME, 
+                    password: GlobalConfig.AWS_ACTIVEMQ_PASSWORD
                   )
       );
 
@@ -84,6 +85,14 @@ class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
                     title: new Text('Me', style: TextStyle(color: Colors.white),),
                 )
             ],
+            onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context){
+                  return Theme(
+                      data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                      child: AppHome(),
+                  );
+                }
+            )),
         ),
     );
   }
