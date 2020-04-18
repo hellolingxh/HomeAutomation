@@ -10,11 +10,10 @@ from scripts.shutter.control import shutterMove, shutterStop
 from scripts.door.bell.control import bellListenning
 from scripts.door.lock.control import lock, unlock
 from scripts.door.camera.control import cameraOn, cameraOff
-from scripts.atmosphere.indoor.control import indoorAtmosphereDataRead
-from scripts.atmosphere.outdoor.control import outdoorAtmosphereDataRead
-from cloud import main as cloudMain
+from scripts.atmosphere.indoor.control import atmosphereDataRead as indoorAtmosphereDataRead
+from scripts.atmosphere.outdoor.control import atmosphereDataRead as outdoorAtmosphereDataRead
+
 import paho.mqtt.client as mqtt
-import _thread
 import time
 
     
@@ -23,7 +22,6 @@ client = mqtt.Client(MQTT_CLIENT_IDENTIFIER) #create new instance
 
 print("connecting to broker")
 client.connect(MQTT_BROKER_ADDRESS) #connect to broker
-
 
 def on_message(client, userdata, message):
     status = str(message.payload.decode("utf-8"))
@@ -113,12 +111,6 @@ def main():
     print('time up to stop')
     client.loop_stop() #stop the loop
 
-if __name__ == "__main__":
-    try:
-        _thread.start_new_thread( main, () )
-        _thread.start_new_thread( cloudMain, () )
-        _thread.start_new_thread( bellListenning, () )
-    except:
-        print ("Error: unable to start thread")
     
+
 

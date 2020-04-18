@@ -6,7 +6,7 @@ import time
 
 INDOOR_DHT_SENSOR = Adafruit_DHT.AM2302
        
-def indoorAtmosphereDataRead():
+def atmosphereDataRead():
     return read(INDOOR_DHT_SENSOR, INDOOR_DHT_PIN)
     
     

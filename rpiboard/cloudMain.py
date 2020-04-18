@@ -23,6 +23,20 @@ def on_message(client, userdata, message):
         else:
             print('light off by INTERNET')
             lightOff()
+    elif message.topic=='topic/fan/control':
+        if status=='off':
+            print('turn fan off by INTERNET')
+            fanOff()
+        elif status.isnumeric():
+            print('fan speed adjust by INTERNET')
+            fanSpeed(int(status))
+    elif message.topic=='topic/shutter/control':
+        if status=='stop':
+            print('shutter stop by INTERNET')
+            shutterStop()
+        else:
+            print('shutter move to ', status, 'by INTERNET')
+            shutterMove(status)
  
 def main():
     
@@ -34,6 +48,10 @@ def main():
     client.connect(AWS_ACTIVEMQ_HOST, port=AWS_ACTIVEMQ_PORT)
     print("Subscribing to ligh topic","topic/light/control by INTERNET")
     client.subscribe(topic='topic/light/control')
+    print("Subscribing to fan topic","topic/fan/control by INTERNET")
+    client.subscribe("topic/fan/control")
+    print("Subscribing to shutter topic","topic/shutter/control by INTERNET")
+    client.subscribe("topic/shutter/control")
     client.loop_start() #start the loop
     time.sleep(24*60*60) # wait
     client.loop_stop() #stop the loop

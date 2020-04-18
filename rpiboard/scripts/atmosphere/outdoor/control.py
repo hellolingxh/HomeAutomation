@@ -6,7 +6,7 @@ import time
 
 OUTDOOR_DHT_SENSOR = Adafruit_DHT.AM2302
        
-def outdoorAtmosphereDataRead():
+def atmosphereDataRead():
     return read(OUTDOOR_DHT_SENSOR, OUTDOOR_DHT_PIN)
     
     
