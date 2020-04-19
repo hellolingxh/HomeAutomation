@@ -15,6 +15,7 @@ from scripts.atmosphere.outdoor.control import atmosphereDataRead as outdoorAtmo
 
 import paho.mqtt.client as mqtt
 import time
+import _thread
 
     
 print("creating new instance")
@@ -75,13 +76,13 @@ def on_message(client, userdata, message):
     elif message.topic=='topic/indoor/measurement/read':
         if status=='on':
             print("indoor measurement reading switch on")
-            result = indoorAtmosphereRead()
-            atmosphere_publish("topic/indoor/measurement/data", result)
+            result = indoorAtmosphereDataRead()
+            client.publish("topic/indoor/measurement/data", result)
     elif message.topic=='topic/outdoor/measurement/read':
         if status=='on':
             print("outdoor measurement reading switch on")
-            result = outdoorAtmosphereRead()
-            atmosphere_publish("topic/outdoor/measurement/data", result)
+            result = outdoorAtmosphereDataRead()
+            client.publish("topic/outdoor/measurement/data", result)
             
 client.on_message=on_message #attach function to callback
             
@@ -111,6 +112,5 @@ def main():
     print('time up to stop')
     client.loop_stop() #stop the loop
 
-    
 
 
