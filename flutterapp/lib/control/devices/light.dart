@@ -63,7 +63,7 @@ class _LightState extends State<LightWidget> with GoogleSpeechRecognition{
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("Lights Control Panel"),
+                title: Text("Light Control Panel"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,
