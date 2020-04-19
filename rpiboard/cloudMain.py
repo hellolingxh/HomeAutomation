@@ -4,6 +4,8 @@ import sys
 sys.path.append('/opt/rpiboard')
 
 from scripts.light.control import lightOn, lightOff
+from scripts.fan.control import fanOff, fanSpeed
+from scripts.shutter.control import shutterMove, shutterStop
 import paho.mqtt.client as mqtt
 from config import AWS_ACTIVEMQ_HOST, AWS_ACTIVEMQ_USER, AWS_ACTIVEMQ_PASSWORD, AWS_ACTIVEMQ_PORT
 
