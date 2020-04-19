@@ -2,21 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
+import 'package:flutterapp/home/appHome.dart';
 
 class ShutterWidget extends StatefulWidget {
+
+  final int networkType;  // to decide the control through either WiFi or Internet
+
+  const ShutterWidget(this.networkType, {Key key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() => new _ShutterState();
+  State<StatefulWidget> createState(){
+    _ShutterState _state ;
+    
+    if(networkType == 0)
+      _state = new _ShutterState( new MqttCommander(
+                    GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
+                    GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
+                    GlobalConfig.MQTT_CLIENT_IDENTIFIER_SHUTTER
+                    )
+            );
+    else
+      _state = new _ShutterState( new MqttCommander(
+                    GlobalConfig.AWS_ACTIVEMQ_HOST, 
+                    GlobalConfig.AWS_ACTIVEMQ_LISTEN_PORT,
+                    GlobalConfig.MQTT_CLIENT_IDENTIFIER_SHUTTER,
+                    isSecure: true,
+                    username: GlobalConfig.AWS_ACTIVEMQ_USERNAME, 
+                    password: GlobalConfig.AWS_ACTIVEMQ_PASSWORD
+                  )
+      );
+
+      return _state;
+  }
 }
 
 class _ShutterState extends State {
 
-  final MqttCommander _commander = new MqttCommander(
-    GlobalConfig.LOCAL_MQTT_BROKER_HOST, 
-    GlobalConfig.LOCAL_MQTT_BROKER_LISTEN_PORT,
-    GlobalConfig.MQTT_CLIENT_IDENTIFIER_SHUTTER
-  );
+  final MqttCommander _commander;
 
   String _shutterAction = "stop";
+
+  _ShutterState(this._commander);
 
   @override 
   void dispose() {
@@ -52,6 +78,14 @@ class _ShutterState extends State {
                     title: new Text('Me', style: TextStyle(color: Colors.white),),
                 )
             ],
+            onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context){
+                  return Theme(
+                      data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                      child: AppHome(),
+                  );
+                }
+            )),
         ),
     );
 

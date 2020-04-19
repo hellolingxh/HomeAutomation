@@ -4,6 +4,7 @@ import 'package:flutterapp/common/const/commands.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/util/mjpegViewer.dart';
 import 'package:flutterapp/common/util/mqttCommander.dart';
+import 'package:flutterapp/home/appHome.dart';
 
 class DoorAccessWidget extends StatefulWidget {
   @override
@@ -68,6 +69,14 @@ class _DoorAccessState extends State<StatefulWidget> {
                     title: new Text('Me', style: TextStyle(color: Colors.white),),
                 )
             ],
+            onTap: (index) => Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context){
+                  return Theme(
+                      data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
+                      child: AppHome(),
+                  );
+                }
+            )),
         ),
     );
   }
@@ -87,16 +96,16 @@ class _DoorAccessState extends State<StatefulWidget> {
                             child: Container(
                                     height: 260,
                                     margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.center,
                                     child: !_isVideoLoading ? 
                                           Center(child: CircularProgressIndicator()) :  
-                                          MjpegView(url: GlobalConfig.DOOR_CAMERA_VIDEO_STREAM_URL, fps: 200),
+                                          MjpegView(url: GlobalConfig.DOOR_CAMERA_VIDEO_STREAM_URL, fps: 100),
                                 ),
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                                lockButtonWidget(),
+                                _lockButtonWidget(),
                                 
                             ],
                         ),
@@ -108,7 +117,7 @@ class _DoorAccessState extends State<StatefulWidget> {
   }
 
 
-  Widget lockButtonWidget (){
+  Widget _lockButtonWidget (){
       return IconButton(
                 icon: Icon(((_isLocked) ? Icons.lock: Icons.lock_open), size:40,),
                 onPressed: () {
@@ -125,7 +134,7 @@ class _DoorAccessState extends State<StatefulWidget> {
 
   void _updateVideoState() async {
     //when the command has already sent to CCTV, then will get the live video after 3 seconds.
-    await Future.delayed(const Duration(milliseconds: 2500), () {
+    await Future.delayed(const Duration(milliseconds: 3000), () {
       if(!_isVideoLoading){
         setState(() {
           _isVideoLoading = true; //notificate the flutter to refresh to component.

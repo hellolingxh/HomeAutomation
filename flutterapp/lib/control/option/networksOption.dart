@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/const/globalConf.dart';
+import 'package:flutterapp/control/devices/fan.dart';
 import 'package:flutterapp/control/devices/light.dart';
+import 'package:flutterapp/control/devices/shutter.dart';
 
-class LightControlOptionWidget extends StatefulWidget {
+class NetworksOptionWidget extends StatefulWidget {
+
+  final DEVICE_NAME deviceName;
+
+  const NetworksOptionWidget({Key key, @required this.deviceName}) : super(key: key);
+  
   @override
-  State<StatefulWidget> createState() => new _LightControlOptionState();
+  State<StatefulWidget> createState() => new _NetworksOptionState();
 
 }
 
-class _LightControlOptionState extends State<LightControlOptionWidget> {
+class _NetworksOptionState extends State<NetworksOptionWidget> {
+  
+  int radioValue = 0;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         key: new GlobalKey<ScaffoldState>(),
         appBar: AppBar(
                 automaticallyImplyLeading: true,
-                title: Text("Light Control Panel Options"),
+                title: Text("Network Options"),
                 elevation: 10.0,
                 centerTitle: true,
                 backgroundColor: Colors.teal,
@@ -41,7 +51,7 @@ class _LightControlOptionState extends State<LightControlOptionWidget> {
     );
   }
 
-  int radioValue = 0;
+  
   void handleRadioValueChanged(int value) {
     setState(() {
       radioValue = value;
@@ -62,13 +72,13 @@ class _LightControlOptionState extends State<LightControlOptionWidget> {
                       groupValue: radioValue,
                       onChanged: handleRadioValueChanged,
                     ),
-                    new Text('WIFI',style: new TextStyle(fontSize: 16.0)),
+                    new Text(GlobalConfig.NETWORK_OPTION_WIFI,style: new TextStyle(fontSize: 16.0)),
                     Radio<int>(
                       value: 1,
                       groupValue: radioValue,
                       onChanged: handleRadioValueChanged,
                     ),
-                    new Text('INTERNET', style: new TextStyle(fontSize: 16.0,)),
+                    new Text(GlobalConfig.NETWORK_OPTION_INTERNET, style: new TextStyle(fontSize: 16.0,)),
                 ],
             ),
             Row(
@@ -88,7 +98,7 @@ class _LightControlOptionState extends State<LightControlOptionWidget> {
                                 builder: (BuildContext context){
                                     return Theme(
                                         data: GlobalConfig.myTheme.copyWith(platform: Theme.of(context).platform),
-                                        child: new LightWidget(radioValue),
+                                        child: _findWidget(this.widget.deviceName),
                                     );
                                 }
                             ));
@@ -99,6 +109,31 @@ class _LightControlOptionState extends State<LightControlOptionWidget> {
         ]
       )
     );
+  }
+
+  Widget _findWidget(DEVICE_NAME deviceName){
+
+    Widget widget;
+
+    switch(deviceName){
+      case DEVICE_NAME.LIGHT:
+        widget = new LightWidget(radioValue);
+        break;
+        
+      case DEVICE_NAME.FAN:
+        widget = new FanWidget(radioValue);
+        break;
+
+      case DEVICE_NAME.SHUTTER:
+        widget = new ShutterWidget(radioValue);
+        break;
+
+      default:
+        break;
+
+    }
+
+    return widget;
   }
     
 }

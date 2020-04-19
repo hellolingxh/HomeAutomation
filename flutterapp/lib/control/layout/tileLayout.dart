@@ -6,9 +6,8 @@ import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/devices/atmosphere.dart';
 import 'package:flutterapp/control/devices/cctv.dart';
 import 'package:flutterapp/control/devices/doorAccess.dart';
-import 'package:flutterapp/control/devices/fan.dart';
-import 'package:flutterapp/control/option/lightControlOption.dart';
-import 'package:flutterapp/control/devices/shutter.dart';
+import 'package:flutterapp/control/option/entertainmentOption.dart';
+import 'package:flutterapp/control/option/networksOption.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
         const StaggeredTile.count(4, 2), // control panel picture
@@ -26,15 +25,19 @@ const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight
 const smallTextStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.0);
 
 CCTVWidget cctvWidget() => CCTVWidget();
-LightControlOptionWidget lightOptionWidget() => LightControlOptionWidget();
-FanWidget fanWidget() => FanWidget();
-ShutterWidget shutterControlWidget() => ShutterWidget();
+NetworksOptionWidget lightWidget() => NetworksOptionWidget(deviceName: DEVICE_NAME.LIGHT);
+NetworksOptionWidget fanWidget() => NetworksOptionWidget(deviceName:DEVICE_NAME.FAN);
+NetworksOptionWidget shutterWidget() => NetworksOptionWidget(deviceName:DEVICE_NAME.SHUTTER);
 AtmosphereWidget indoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.INDOOR);
 AtmosphereWidget outdoorAtmosphereWidget() => AtmosphereWidget(GlobalConfig.OUTDOOR);
 DoorAccessWidget doorAccessWidget() => DoorAccessWidget();
-
+EntertainmentOptionWidget entertainmentOptionWidget() => EntertainmentOptionWidget();
 List<Widget> tiles = const <Widget> [
-    const _TileImageCard(),
+    const Card(
+        elevation: 10,
+        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
+        child: const Image(image: AssetImage(GlobalConfig.DEVICE_CONTROL_PANEL_SCREEN_BACKGROUND_IMAGE), fit: BoxFit.fill,),
+    ),
     const TileCard(
             'CCTV', 
             textStyle, 
@@ -60,7 +63,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Shutter', 
             textStyle, 
-            shutterControlWidget,
+            shutterWidget,
             Colors.green,
             Icon(
                 Icons.shutter_speed,
@@ -93,7 +96,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Entertainment', 
             textStyle, 
-            null,
+            entertainmentOptionWidget,
             Colors.greenAccent,
             Icon(
                 FlutterCustomIcon.gamepad,
@@ -104,7 +107,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Light', 
             textStyle, 
-            lightOptionWidget,
+            lightWidget,
             Colors.lightBlue,
             Icon(
                 FlutterCustomIcon.lamp,
@@ -134,19 +137,3 @@ StaggeredGridView staggeredGridView = new StaggeredGridView.count(
                 crossAxisSpacing: 0.0,
                 padding: const EdgeInsets.all(0.0),
 );
-
-class _TileImageCard extends StatelessWidget {
-
-  const _TileImageCard();
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return new Card(
-        elevation: 10,
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
-        child: Image.asset('statics/images/devices.png', fit: BoxFit.fill,),
-    );
-  }
-
-}

@@ -12,6 +12,10 @@ class GlobalConfig {
 
     static const String CElSIUS_SYMBOL = '\u2103';
 
+    static const String HOME_SCREEN_BACKGROUND_IMAGE = 'statics/images/home_logo.jpg';
+
+    static const String DEVICE_CONTROL_PANEL_SCREEN_BACKGROUND_IMAGE = 'statics/images/devices.png';
+    
     static const String CCTV_VIDEO_STREAM_URL = 'http://192.168.8.133:8080/?action=stream';
 
     static const String DOOR_CAMERA_VIDEO_STREAM_URL = 'http://192.168.8.133:8088/?action=stream';
@@ -23,6 +27,10 @@ class GlobalConfig {
     static const String AWS_ACTIVEMQ_HOST = 'b-ddb6ba7b-55f1-4ad2-b3c9-7754a11843ac-1.mq.eu-west-1.amazonaws.com';
 
     static const int AWS_ACTIVEMQ_LISTEN_PORT = 8883;
+
+    static const String AWS_ACTIVEMQ_USERNAME = 'mqtt';
+
+    static const String AWS_ACTIVEMQ_PASSWORD = '1qaz@WSX3edc';
 
     static const String INDOOR = 'indoor';
 
@@ -48,4 +56,10 @@ class GlobalConfig {
 
     static const String MQTT_CLIENT_IDENTIFIER_DOORACCESS = 'DoorAccess_MQTT_Client';
 
+    static const String NETWORK_OPTION_WIFI = 'WiFi';
+
+    static const String NETWORK_OPTION_INTERNET = 'Internet';
+
 }
+
+enum DEVICE_NAME {LIGHT, FAN, SHUTTER, CCTV, DOOR_CAMERA, DOOR_LOCK, ATMOSPHERE_SENSOR }

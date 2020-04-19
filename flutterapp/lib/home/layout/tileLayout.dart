@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterapp/common/ui/imageTileCart.dart';
+import 'package:flutterapp/common/const/globalConf.dart';
 import 'package:flutterapp/common/ui/tileCard.dart';
 import 'package:flutterapp/common/icon/flutterCustomIcon.dart';
 import 'package:flutterapp/control/deviceControlPanel.dart';
 
 List<StaggeredTile> staggeredTiles = const <StaggeredTile>[
-        const StaggeredTile.count(4, 2),
-        const StaggeredTile.count(2, 1),
-        const StaggeredTile.count(2, 1),
+        const StaggeredTile.count(4, 3),
         const StaggeredTile.count(2, 3),
         const StaggeredTile.count(2, 2),
         const StaggeredTile.count(2, 1),
 ];
 
-DeviceControlPanel deviceControlPanelCallback() => DeviceControlPanel();
+DeviceControlPanel deviceControlPanel() => DeviceControlPanel();
 
 const textStyle = const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 20.0);
 
 List<Widget> tiles = const <Widget> [
-    const _HomeLogoCard(),
-    const ImageTileCard('outdoor', 12, Colors.white, 'statics/images/outdoor.jpg', null,),
-    const ImageTileCard('indoor', 21, Colors.white, 'statics/images/indoor.jpg', null,),
+    const Card(
+        elevation: 10,
+        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
+        child: const Image(image: AssetImage(GlobalConfig.HOME_SCREEN_BACKGROUND_IMAGE), fit: BoxFit.fill,),
+    ),
     const TileCard(
             'Remote Control', 
             textStyle, 
-            deviceControlPanelCallback,
+            deviceControlPanel,
             Colors.green,
             Icon(
                 Icons.wifi,
@@ -36,7 +36,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Data Statistics',
             textStyle, 
-            deviceControlPanelCallback,
+            deviceControlPanel,
             Colors.orange,
             Icon(
                 FlutterCustomIcon.chart_line,
@@ -47,7 +47,7 @@ List<Widget> tiles = const <Widget> [
     const TileCard(
             'Configuration', 
             textStyle, 
-            deviceControlPanelCallback,
+            deviceControlPanel,
             Colors.cyan,
             Icon(
                FlutterCustomIcon.cog_alt,
@@ -65,19 +65,3 @@ StaggeredGridView staggeredGridView = new StaggeredGridView.count(
                 crossAxisSpacing: 0.0,
                 padding: const EdgeInsets.all(0.0),
 );
-
-class _HomeLogoCard extends StatelessWidget {
-
-  const _HomeLogoCard();
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return new Card(
-        elevation: 10,
-        shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero), side: BorderSide(width: 0, color: Colors.white)),
-        child: Image.asset('statics/images/home_logo.jpg', fit: BoxFit.fill,),
-    );
-  }
-    
-}
