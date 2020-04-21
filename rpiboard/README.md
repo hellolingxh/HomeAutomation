@@ -21,7 +21,7 @@ mkdir /tmp/www
 - To run the mjpg-streamer
   - mjpg-stream -i 'input-uvc.so' -o 'output-http.so -w /tmp/www'
 
-
+Problem Solved
 RPI 4 unable to connect to WiFi.
 https://www.raspberrypi.org/forums/viewtopic.php?t=247982
 There is a conflict between wifi and low screen resolution.
